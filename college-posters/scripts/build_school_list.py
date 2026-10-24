@@ -1,0 +1,172 @@
+"""生成 985/211 院校总名单（按校区独立招生口径，共 115 所）。"""
+from pathlib import Path
+
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Font, PatternFill
+
+ROOT = Path(__file__).resolve().parent.parent
+
+# 校名, 层次, 省份, 城市, 主管部门, 官网, 备注
+S985 = [
+    ("清华大学", "北京", "北京", "教育部", "www.tsinghua.edu.cn", "C9"),
+    ("北京大学", "北京", "北京", "教育部", "www.pku.edu.cn", "C9"),
+    ("中国人民大学", "北京", "北京", "教育部", "www.ruc.edu.cn", ""),
+    ("北京航空航天大学", "北京", "北京", "工业和信息化部", "www.buaa.edu.cn", "国防七子"),
+    ("北京理工大学", "北京", "北京", "工业和信息化部", "www.bit.edu.cn", "国防七子；已出样板"),
+    ("中国农业大学", "北京", "北京", "教育部", "www.cau.edu.cn", ""),
+    ("北京师范大学", "北京", "北京", "教育部", "www.bnu.edu.cn", ""),
+    ("中央民族大学", "北京", "北京", "国家民族事务委员会", "www.muc.edu.cn", ""),
+    ("南开大学", "天津", "天津", "教育部", "www.nankai.edu.cn", ""),
+    ("天津大学", "天津", "天津", "教育部", "www.tju.edu.cn", ""),
+    ("大连理工大学", "辽宁", "大连", "教育部", "www.dlut.edu.cn", ""),
+    ("东北大学", "辽宁", "沈阳", "教育部", "www.neu.edu.cn", ""),
+    ("吉林大学", "吉林", "长春", "教育部", "www.jlu.edu.cn", ""),
+    ("哈尔滨工业大学", "黑龙江", "哈尔滨", "工业和信息化部", "www.hit.edu.cn", "C9；国防七子"),
+    ("复旦大学", "上海", "上海", "教育部", "www.fudan.edu.cn", "C9"),
+    ("同济大学", "上海", "上海", "教育部", "www.tongji.edu.cn", ""),
+    ("上海交通大学", "上海", "上海", "教育部", "www.sjtu.edu.cn", "C9"),
+    ("华东师范大学", "上海", "上海", "教育部", "www.ecnu.edu.cn", ""),
+    ("南京大学", "江苏", "南京", "教育部", "www.nju.edu.cn", "C9"),
+    ("东南大学", "江苏", "南京", "教育部", "www.seu.edu.cn", ""),
+    ("浙江大学", "浙江", "杭州", "教育部", "www.zju.edu.cn", "C9"),
+    ("中国科学技术大学", "安徽", "合肥", "中国科学院", "www.ustc.edu.cn", "C9"),
+    ("厦门大学", "福建", "厦门", "教育部", "www.xmu.edu.cn", ""),
+    ("山东大学", "山东", "济南", "教育部", "www.sdu.edu.cn", ""),
+    ("中国海洋大学", "山东", "青岛", "教育部", "www.ouc.edu.cn", ""),
+    ("武汉大学", "湖北", "武汉", "教育部", "www.whu.edu.cn", ""),
+    ("华中科技大学", "湖北", "武汉", "教育部", "www.hust.edu.cn", ""),
+    ("湖南大学", "湖南", "长沙", "教育部", "www.hnu.edu.cn", ""),
+    ("中南大学", "湖南", "长沙", "教育部", "www.csu.edu.cn", ""),
+    ("国防科技大学", "湖南", "长沙", "中央军委", "www.nudt.edu.cn", "军校"),
+    ("中山大学", "广东", "广州", "教育部", "www.sysu.edu.cn", ""),
+    ("华南理工大学", "广东", "广州", "教育部", "www.scut.edu.cn", ""),
+    ("四川大学", "四川", "成都", "教育部", "www.scu.edu.cn", ""),
+    ("电子科技大学", "四川", "成都", "教育部", "www.uestc.edu.cn", ""),
+    ("重庆大学", "重庆", "重庆", "教育部", "www.cqu.edu.cn", ""),
+    ("西安交通大学", "陕西", "西安", "教育部", "www.xjtu.edu.cn", "C9"),
+    ("西北工业大学", "陕西", "西安", "工业和信息化部", "www.nwpu.edu.cn", "国防七子"),
+    ("西北农林科技大学", "陕西", "杨凌", "教育部", "www.nwafu.edu.cn", ""),
+    ("兰州大学", "甘肃", "兰州", "教育部", "www.lzu.edu.cn", ""),
+]
+
+S211 = [
+    ("北京交通大学", "北京", "北京", "教育部", "www.bjtu.edu.cn", ""),
+    ("北京工业大学", "北京", "北京", "北京市", "www.bjut.edu.cn", ""),
+    ("北京科技大学", "北京", "北京", "教育部", "www.ustb.edu.cn", ""),
+    ("北京化工大学", "北京", "北京", "教育部", "www.buct.edu.cn", ""),
+    ("北京邮电大学", "北京", "北京", "教育部", "www.bupt.edu.cn", ""),
+    ("北京林业大学", "北京", "北京", "教育部", "www.bjfu.edu.cn", ""),
+    ("北京中医药大学", "北京", "北京", "教育部", "www.bucm.edu.cn", ""),
+    ("北京外国语大学", "北京", "北京", "教育部", "www.bfsu.edu.cn", ""),
+    ("中国传媒大学", "北京", "北京", "教育部", "www.cuc.edu.cn", ""),
+    ("中央财经大学", "北京", "北京", "教育部", "www.cufe.edu.cn", ""),
+    ("对外经济贸易大学", "北京", "北京", "教育部", "www.uibe.edu.cn", ""),
+    ("北京体育大学", "北京", "北京", "国家体育总局", "www.bsu.edu.cn", ""),
+    ("中央音乐学院", "北京", "北京", "教育部", "www.ccom.edu.cn", "艺术类"),
+    ("中国政法大学", "北京", "北京", "教育部", "www.cupl.edu.cn", ""),
+    ("华北电力大学", "北京", "北京", "教育部", "www.ncepu.edu.cn", "另有保定校区"),
+    ("中国矿业大学（北京）", "北京", "北京", "教育部", "www.cumtb.edu.cn", "与徐州本部分别招生"),
+    ("中国石油大学（北京）", "北京", "北京", "教育部", "www.cup.edu.cn", "与华东分别招生"),
+    ("中国地质大学（北京）", "北京", "北京", "教育部", "www.cugb.edu.cn", "与武汉分别招生"),
+    ("天津医科大学", "天津", "天津", "天津市", "www.tmu.edu.cn", ""),
+    ("河北工业大学", "河北", "天津", "河北省", "www.hebut.edu.cn", "河北省属，校址在天津"),
+    ("太原理工大学", "山西", "太原", "山西省", "www.tyut.edu.cn", ""),
+    ("内蒙古大学", "内蒙古", "呼和浩特", "内蒙古自治区", "www.imu.edu.cn", ""),
+    ("辽宁大学", "辽宁", "沈阳", "辽宁省", "www.lnu.edu.cn", ""),
+    ("大连海事大学", "辽宁", "大连", "交通运输部", "www.dlmu.edu.cn", ""),
+    ("延边大学", "吉林", "延吉", "吉林省", "www.ybu.edu.cn", ""),
+    ("东北师范大学", "吉林", "长春", "教育部", "www.nenu.edu.cn", ""),
+    ("哈尔滨工程大学", "黑龙江", "哈尔滨", "工业和信息化部", "www.hrbeu.edu.cn", "国防七子"),
+    ("东北农业大学", "黑龙江", "哈尔滨", "黑龙江省", "www.neau.edu.cn", ""),
+    ("东北林业大学", "黑龙江", "哈尔滨", "教育部", "www.nefu.edu.cn", ""),
+    ("华东理工大学", "上海", "上海", "教育部", "www.ecust.edu.cn", ""),
+    ("东华大学", "上海", "上海", "教育部", "www.dhu.edu.cn", ""),
+    ("上海外国语大学", "上海", "上海", "教育部", "www.shisu.edu.cn", ""),
+    ("上海财经大学", "上海", "上海", "教育部", "www.sufe.edu.cn", ""),
+    ("上海大学", "上海", "上海", "上海市", "www.shu.edu.cn", ""),
+    ("海军军医大学", "上海", "上海", "中央军委", "www.smmu.edu.cn", "军校"),
+    ("苏州大学", "江苏", "苏州", "江苏省", "www.suda.edu.cn", ""),
+    ("南京航空航天大学", "江苏", "南京", "工业和信息化部", "www.nuaa.edu.cn", "国防七子"),
+    ("南京理工大学", "江苏", "南京", "工业和信息化部", "www.njust.edu.cn", "国防七子"),
+    ("中国矿业大学", "江苏", "徐州", "教育部", "www.cumt.edu.cn", ""),
+    ("河海大学", "江苏", "南京", "教育部", "www.hhu.edu.cn", ""),
+    ("江南大学", "江苏", "无锡", "教育部", "www.jiangnan.edu.cn", ""),
+    ("南京农业大学", "江苏", "南京", "教育部", "www.njau.edu.cn", ""),
+    ("中国药科大学", "江苏", "南京", "教育部", "www.cpu.edu.cn", ""),
+    ("南京师范大学", "江苏", "南京", "江苏省", "www.njnu.edu.cn", ""),
+    ("合肥工业大学", "安徽", "合肥", "教育部", "www.hfut.edu.cn", ""),
+    ("安徽大学", "安徽", "合肥", "安徽省", "www.ahu.edu.cn", ""),
+    ("福州大学", "福建", "福州", "福建省", "www.fzu.edu.cn", ""),
+    ("南昌大学", "江西", "南昌", "江西省", "www.ncu.edu.cn", ""),
+    ("中国石油大学（华东）", "山东", "青岛", "教育部", "www.upc.edu.cn", ""),
+    ("郑州大学", "河南", "郑州", "河南省", "www.zzu.edu.cn", ""),
+    ("武汉理工大学", "湖北", "武汉", "教育部", "www.whut.edu.cn", ""),
+    ("华中农业大学", "湖北", "武汉", "教育部", "www.hzau.edu.cn", ""),
+    ("华中师范大学", "湖北", "武汉", "教育部", "www.ccnu.edu.cn", ""),
+    ("中南财经政法大学", "湖北", "武汉", "教育部", "www.zuel.edu.cn", ""),
+    ("中国地质大学（武汉）", "湖北", "武汉", "教育部", "www.cug.edu.cn", ""),
+    ("湖南师范大学", "湖南", "长沙", "湖南省", "www.hunnu.edu.cn", ""),
+    ("暨南大学", "广东", "广州", "中央统战部", "www.jnu.edu.cn", ""),
+    ("华南师范大学", "广东", "广州", "广东省", "www.scnu.edu.cn", ""),
+    ("广西大学", "广西", "南宁", "广西壮族自治区", "www.gxu.edu.cn", ""),
+    ("海南大学", "海南", "海口", "海南省", "www.hainanu.edu.cn", ""),
+    ("西南大学", "重庆", "重庆", "教育部", "www.swu.edu.cn", ""),
+    ("西南交通大学", "四川", "成都", "教育部", "www.swjtu.edu.cn", ""),
+    ("四川农业大学", "四川", "雅安", "四川省", "www.sicau.edu.cn", "雅安/成都/都江堰校区"),
+    ("西南财经大学", "四川", "成都", "教育部", "www.swufe.edu.cn", ""),
+    ("贵州大学", "贵州", "贵阳", "贵州省", "www.gzu.edu.cn", ""),
+    ("云南大学", "云南", "昆明", "云南省", "www.ynu.edu.cn", ""),
+    ("西藏大学", "西藏", "拉萨", "西藏自治区", "www.utibet.edu.cn", ""),
+    ("西北大学", "陕西", "西安", "陕西省", "www.nwu.edu.cn", ""),
+    ("西安电子科技大学", "陕西", "西安", "教育部", "www.xidian.edu.cn", ""),
+    ("长安大学", "陕西", "西安", "教育部", "www.chd.edu.cn", ""),
+    ("陕西师范大学", "陕西", "西安", "教育部", "www.snnu.edu.cn", ""),
+    ("空军军医大学", "陕西", "西安", "中央军委", "www.fmmu.edu.cn", "军校"),
+    ("青海大学", "青海", "西宁", "青海省", "www.qhu.edu.cn", ""),
+    ("宁夏大学", "宁夏", "银川", "宁夏回族自治区", "www.nxu.edu.cn", ""),
+    ("新疆大学", "新疆", "乌鲁木齐", "新疆维吾尔自治区", "www.xju.edu.cn", ""),
+    ("石河子大学", "新疆", "石河子", "新疆生产建设兵团", "www.shzu.edu.cn", ""),
+]
+
+rows = [(n, "985 / 211", *r) for n, *r in S985] + [(n, "211", *r) for n, *r in S211]
+names = [r[0] for r in rows]
+assert len(set(names)) == len(names) == 115, len(names)
+
+wb = Workbook()
+ws = wb.active
+ws.title = "院校总名单"
+header = ["序号", "校名", "层次", "省份", "城市", "主管部门", "官网", "备注", "资料状态", "海报状态"]
+ws.append(header)
+for i, r in enumerate(rows, 1):
+    status = "已完成" if r[0] == "北京理工大学" else "待收集"
+    ws.append([i, *r, status, "已出样板" if r[0] == "北京理工大学" else "未制作"])
+for c in ws[1]:
+    c.font = Font(bold=True, color="FFFFFF")
+    c.fill = PatternFill("solid", fgColor="0B6B3F")
+for row in ws.iter_rows(min_row=2):
+    for c in row:
+        c.alignment = Alignment(vertical="center")
+    if row[2].value.startswith("985"):
+        row[2].fill = PatternFill("solid", fgColor="E3F1E8")
+    if "军校" in (row[7].value or ""):
+        row[7].fill = PatternFill("solid", fgColor="FFF2CC")
+for col, w in zip("ABCDEFGHIJ", [6, 22, 10, 9, 10, 18, 24, 22, 10, 10]):
+    ws.column_dimensions[col].width = w
+ws.freeze_panes = "C2"
+ws.auto_filter.ref = ws.dimensions
+
+# 按省份汇总
+ws2 = wb.create_sheet("按省份统计")
+ws2.append(["省份", "985", "211（含985）"])
+from collections import Counter
+c985 = Counter(r[2] for r in rows if r[1].startswith("985"))
+call = Counter(r[2] for r in rows)
+for prov, n in sorted(call.items(), key=lambda x: -x[1]):
+    ws2.append([prov, c985.get(prov, 0), n])
+ws2.append(["合计", sum(c985.values()), len(rows)])
+for c in ws2[1]:
+    c.font = Font(bold=True)
+
+dst = ROOT / "data" / "985_211院校总名单.xlsx"
+wb.save(dst)
+print(dst, len(S985), len(S211))
