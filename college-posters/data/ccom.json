@@ -12,8 +12,8 @@
     "教育部直属"
   ],
   "slogan": "新中国成立后首批组建的高等音乐学府",
-  "motto": "乐以 载道",
-  "motto_note": "运营寄语（校训原文待核）",
+  "motto": "勤奋求实 团结进取",
+  "motto_note": "勤奋、求实、团结、进取",
   "founded": "1950",
   "basic": [
     [
@@ -127,6 +127,5 @@
   ],
   "encourage": "目标央音，从今天的每一道题开始",
   "source": "信息来源：教育部双一流名单、软科、学校官网及公开报道（截至2026年10月），仅供参考",
-  "hero": "assets/ccom_hero.svg",
-  "motto_label": "寄语"
+  "hero": "assets/ccom_hero.svg"
 }
