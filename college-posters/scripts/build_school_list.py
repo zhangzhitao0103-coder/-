@@ -130,6 +130,8 @@ S211 = [
 
 BATCH1 = {"清华大学", "北京大学", "浙江大学", "上海交通大学", "复旦大学", "南京大学",
           "中国科学技术大学", "武汉大学", "华中科技大学", "西安交通大学"}
+BATCH2 = {"北京航空航天大学", "哈尔滨工业大学", "中山大学", "东南大学", "四川大学",
+          "中国人民大学", "同济大学", "北京师范大学", "天津大学", "南开大学"}
 
 rows = [(n, "985 / 211", *r) for n, *r in S985] + [(n, "211", *r) for n, *r in S211]
 names = [r[0] for r in rows]
@@ -144,6 +146,8 @@ for i, r in enumerate(rows, 1):
     if r[0] == "北京理工大学":
         status, poster = "已完成", "已出样板"
     elif r[0] in BATCH1:
+        status, poster = "已完成", "已出图"
+    elif r[0] in BATCH2:
         status, poster = "已收集（待审核）", "已出图（待审核）"
     else:
         status, poster = "待收集", "未制作"

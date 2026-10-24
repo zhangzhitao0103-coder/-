@@ -20,6 +20,16 @@ HEROES = {
     "whu": ("castle", "#e8e0cf", "#3c7a6a", "#dbe8f2"),        # 老斋舍 + 樱花
     "hust": ("modern", "#e3ddd0", "#4f7a54", "#d3e7ee"),       # 森林校园
     "xjtu": ("library", "#c8b79c", "#7a4a3c", "#d7e6f0"),      # 兴庆校区 + 樱花道
+    "buaa": ("modern", "#e2e4e8", "#2f5f8f", "#cfe2f3"),       # 新主楼
+    "hit": ("clock", "#d8cdb6", "#8a5a3c", "#d6e6f0"),         # 苏式主楼
+    "sysu": ("library", "#b8573f", "#4f6b5a", "#d3e7ee"),      # 怀士堂红砖楼
+    "seu": ("library", "#d9d2c2", "#3f6f78", "#d4e5f0"),       # 大礼堂
+    "scu": ("clock", "#9e5d45", "#3f4f5f", "#d6e8ee"),         # 华西钟楼
+    "ruc": ("modern", "#e6e0d4", "#a8463a", "#d6e5f0"),        # 明德楼
+    "tongji": ("modern", "#e9e9e6", "#4a6f8f", "#d2e4f2"),     # 文远楼
+    "bnu": ("library", "#ddd5c4", "#2f5f8f", "#d4e6f1"),       # 主楼
+    "tju": ("twin", "#dcd6cb", "#2f5f8f", "#d2e4f2"),          # 北洋园
+    "nankai": ("library", "#c9b79a", "#6b3f5f", "#d7e6f0"),    # 主楼 + 马蹄湖
 }
 
 
