@@ -57,6 +57,16 @@ HEROES = {
     "zzu": ("twin", "#dcd6cb", "#a8463a", "#d2e4f2"),          # 主校区
     "hzau": ("library", "#d6cdb5", "#4f7a3f", "#d6eadf"),      # 狮子山
     "suda": ("clock", "#b65a45", "#4f4f4f", "#d6e9ef"),        # 东吴钟楼
+    "nenu": ("library", "#d6cdbb", "#3f5f7a", "#d4e6f1"),      # 本部校区
+    "swjtu": ("modern", "#e4e4e0", "#2f4f8f", "#cfe2f3"),      # 犀浦校区
+    "bupt": ("modern", "#e6e6ea", "#2f5f9f", "#cfe2f3"),       # 主楼
+    "jiangnan": ("castle", "#ece6d6", "#3f6f6f", "#cfe6f2"),   # 蠡湖
+    "ccnu": ("library", "#dcd3c2", "#4f6f3f", "#d6eadf"),      # 桂子山
+    "whut": ("modern", "#e4e0d8", "#2f5f7a", "#d2e6ee"),       # 马房山
+    "njau": ("library", "#d4c8ad", "#3f6f4f", "#d6eadf"),      # 大屋顶主楼
+    "cug": ("pagoda", "#8b6a4c", "#4f5f3f", "#d7e8f0"),        # 南望山
+    "buct": ("modern", "#e6e2d8", "#2f6f6f", "#d2e6ee"),       # 东校区
+    "njnu": ("gate", "#efe6d6", "#7a3f3f", "#d8e8ee"),         # 随园大屋顶
 }
 
 
