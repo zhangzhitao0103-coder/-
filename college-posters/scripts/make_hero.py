@@ -67,6 +67,16 @@ HEROES = {
     "cug": ("pagoda", "#8b6a4c", "#4f5f3f", "#d7e8f0"),        # 南望山
     "buct": ("modern", "#e6e2d8", "#2f6f6f", "#d2e6ee"),       # 东校区
     "njnu": ("gate", "#efe6d6", "#7a3f3f", "#d8e8ee"),         # 随园大屋顶
+    "jnu": ("library", "#d8cfbe", "#a8463a", "#d4e6f1"),       # 石牌校区
+    "shu": ("castle", "#ece6d6", "#2f5f7a", "#cfe6f2"),        # 泮池
+    "swu": ("library", "#d6cdb5", "#3f6f4f", "#d6eadf"),       # 缙云山
+    "cupb": ("modern", "#e4e2dc", "#2f4f6f", "#d2e6ee"),       # 昌平校区
+    "hhu": ("library", "#d8cfbe", "#2f5f8f", "#d2e4f2"),       # 西康路
+    "snnu": ("library", "#dcd3c2", "#7a3f3f", "#d4e6f1"),      # 长安校区
+    "bjut": ("modern", "#e6e6ea", "#2f5f9f", "#cfe2f3"),       # 奥运场馆
+    "cumt": ("modern", "#e3ddd0", "#4f4f5f", "#d3e7ee"),       # 南湖校区
+    "nwu": ("gate", "#efe6d6", "#7a4a3c", "#d8e8ee"),          # 太白校区
+    "ynu": ("library", "#c9b79a", "#3f6f5a", "#d7e6f0"),       # 会泽院
 }
 
 
