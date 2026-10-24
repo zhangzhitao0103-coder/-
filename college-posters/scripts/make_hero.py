@@ -107,6 +107,16 @@ HEROES = {
     "ybu": ("modern", "#e6e6ea", "#2f5f8f", "#cfe2f3"),        # 延吉
     "utibet": ("castle", "#f0e8d6", "#a8463a", "#cfe3f5"),     # 雪域
     "qhu": ("modern", "#e6e3dc", "#2f6f8f", "#cfe3f5"),        # 高原
+    "sufe": ("modern", "#e4e6ea", "#1f3f6f", "#cfe2f3"),       # 国定路
+    "cufe": ("modern", "#e6e2d8", "#a8463a", "#d6e5f0"),       # 学院南路
+    "uibe": ("modern", "#e4e2dc", "#2f5f8f", "#d2e6ee"),       # 诚信楼
+    "zuel": ("castle", "#e8e0cf", "#3f6f5a", "#cfe6f2"),       # 南湖
+    "swufe": ("library", "#d8cfbe", "#2f4f7a", "#d4e6f1"),     # 柳林
+    "bfsu": ("library", "#dcd3c2", "#2f5f8f", "#d4e6f1"),      # 东院
+    "shisu": ("modern", "#e6e6ea", "#7a3f3f", "#cfe2f3"),      # 松江
+    "cupl": ("gate", "#efe6d6", "#7a3f3f", "#d8e8ee"),         # 昌平
+    "bucm": ("pagoda", "#8b5a3c", "#3f6f5a", "#d7e8f0"),       # 中医药
+    "cpu": ("library", "#d6cdb5", "#3f6f4f", "#d6eadf"),       # 药用植物园
 }
 
 
