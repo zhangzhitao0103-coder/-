@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>A版·信息图式</title>
+<title>院校海报</title>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -29,8 +29,7 @@
   }
   /* 页眉 */
   .topbar { display: flex; justify-content: space-between; align-items: center; font-size: 22px; }
-  .series { background: var(--green); color: #fff; padding: 8px 20px 8px 16px; border-radius: 4px 22px 22px 4px; font-weight: 700; letter-spacing: 2px; }
-  .series b { color: #ffd88a; font-size: 26px; margin: 0 4px; }
+  .series { background: var(--green); color: #fff; padding: 8px 22px 8px 16px; border-radius: 4px 22px 22px 4px; font-weight: 700; letter-spacing: 2px; }
   .city { color: var(--ink2); font-weight: 500; letter-spacing: 2px; }
   .city i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--red); margin-right: 8px; }
   .title { font-family: "Ma Shan Zheng", serif; font-size: 128px; line-height: 1.05; text-align: center; letter-spacing: 6px; margin-top: 6px; color: #13201a; }
@@ -42,7 +41,7 @@
   .slogan::before, .slogan::after { content: ""; width: 110px; height: 2px; background: var(--ink); opacity: .6; }
 
   /* 主视觉 */
-  .hero { display: flex; align-items: stretch; gap: 16px; margin-top: 12px; height: 300px; }
+  .hero { display: flex; align-items: stretch; gap: 16px; margin-top: 14px; height: 340px; }
   .motto { width: 74px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .motto .v { writing-mode: vertical-rl; font-family: "Ma Shan Zheng", serif; font-size: 46px; letter-spacing: 10px; color: var(--red); }
   .motto .seal { margin-top: 10px; writing-mode: vertical-rl; font-size: 16px; color: #fff; background: var(--red); padding: 8px 4px; border-radius: 3px; letter-spacing: 3px; }
@@ -110,16 +109,14 @@
   .req b { color: var(--green); }
 
   /* 页脚 */
-  .foot { display: flex; align-items: center; gap: 20px; margin-top: auto; padding: 14px 0 10px; border-top: 2px solid rgba(30,42,35,.15); }
-  .foot .enc { flex: 1; }
-  .foot .enc p { font-family: "Ma Shan Zheng", serif; font-size: 40px; white-space: nowrap; color: var(--green); line-height: 1.2; }
-  .foot .enc small { font-size: 17px; color: var(--muted); letter-spacing: 1px; }
-  .qr { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1.5px solid #e2d8c3; border-radius: 14px; padding: 10px 14px; }
-  .qr .code { width: 100px; height: 100px; }
-  .qr .code svg { width: 100%; height: 100%; display: block; }
-  .qr .txt { font-size: 18px; line-height: 1.5; color: var(--ink2); }
-  .qr .txt b { display: block; font-size: 22px; color: var(--ink); }
-  .src { font-size: 14px; color: var(--muted); text-align: center; padding-bottom: 14px; }
+  .foot { margin: auto -44px 0; background: #0b3d2e; color: #fff; display: flex; align-items: center; gap: 22px; padding: 18px 44px; }
+  .foot .qr { width: 118px; height: 118px; background: #fff; padding: 8px; border-radius: 10px; flex-shrink: 0; }
+  .foot .qr svg { width: 100%; height: 100%; display: block; }
+  .foot .t { flex: 1; min-width: 0; }
+  .foot .t p { font-size: 34px; font-weight: 900; white-space: nowrap; }
+  .foot .t p b { color: #ffc93c; }
+  .foot .t div { font-size: 19px; opacity: .85; margin-top: 6px; }
+  .foot .t small { display: block; font-size: 13px; opacity: .6; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -128,14 +125,13 @@
 <script>
 const D = window.DATA;
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
-const pad = n => String(n).padStart(2, "0");
 const motto = D.motto.split(/\s+/);
 const h = (cls, no, title, body) =>
   `<section class="m ${cls}"><h3><span class="no">${no}</span>${title}</h3><div class="bd">${body}</div></section>`;
 
 document.getElementById("poster").innerHTML = `
   <div class="topbar">
-    <div class="series">每日一所好大学 · 第<b>${pad(D.no)}</b>站</div>
+    <div class="series">高考择校 · 名校速览</div>
     <div class="city"><i></i>${esc(D.city)}</div>
   </div>
   <h1 class="title">${esc(D.name)}</h1>
@@ -176,10 +172,11 @@ document.getElementById("poster").innerHTML = `
   </div>
 
   <div class="foot">
-    <div class="enc"><p>${esc(D.encourage)}</p><small>${esc(motto.join(" · "))}</small></div>
-    <div class="qr"><div class="code">${window.QR}</div><div class="txt"><b>扫码访问官网</b>${esc(D.website_label)}</div></div>
+    <div class="qr">${window.QR}</div>
+    <div class="t"><p>${esc(D.encourage).replace(esc(D.short), `<b>${esc(D.short)}</b>`)}</p>
+      <div>扫码访问官网 · ${esc(D.website_label)}</div>
+      <small>${esc(D.source)}</small></div>
   </div>
-  <div class="src">${esc(D.source)}</div>
 `;
 
 window.checkOverflow = () => {
@@ -193,6 +190,8 @@ window.checkOverflow = () => {
   if (g > f + 1) bad.push("模块区压到页脚 " + Math.round(g - f) + "px");
   const last = p.lastElementChild.getBoundingClientRect().bottom;
   if (last > p.getBoundingClientRect().bottom + 1) bad.push("整体超出 " + Math.round(last - 1920) + "px");
+  const enc = document.querySelector(".foot .t p");
+  if (enc.scrollWidth > enc.clientWidth + 1) bad.push("激励语过长");
   return bad;
 };
 </script>
