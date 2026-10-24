@@ -97,6 +97,16 @@ HEROES = {
     "dlmu": ("modern", "#e6e6ea", "#1f4f7f", "#cfe2f3"),       # 航海
     "imu": ("gate", "#efe6d6", "#2f6f8f", "#d8e8ee"),          # 北疆
     "ahu": ("library", "#d8cfbe", "#3f5f7a", "#d4e6f1"),       # 文典阁
+    "nefu": ("library", "#d4c8ad", "#3f6f3f", "#d6eadf"),      # 林业
+    "neau": ("library", "#d6cdb5", "#4f7a3f", "#d6eadf"),      # 黑土地
+    "lnu": ("modern", "#e4e2dc", "#2f4f6f", "#d2e6ee"),        # 蒲河校区
+    "xju": ("gate", "#efe6d6", "#2f6f8f", "#d8e8ee"),          # 博达校区
+    "sicau": ("library", "#d8cfbe", "#3f6f4f", "#d6eadf"),     # 雅安
+    "shzu": ("modern", "#e6e2d8", "#7a4a3c", "#d6e5f0"),       # 军垦新城
+    "nxu": ("gate", "#efe6d6", "#7a3f5f", "#d8e8ee"),          # 贺兰山
+    "ybu": ("modern", "#e6e6ea", "#2f5f8f", "#cfe2f3"),        # 延吉
+    "utibet": ("castle", "#f0e8d6", "#a8463a", "#cfe3f5"),     # 雪域
+    "qhu": ("modern", "#e6e3dc", "#2f6f8f", "#cfe3f5"),        # 高原
 }
 
 
