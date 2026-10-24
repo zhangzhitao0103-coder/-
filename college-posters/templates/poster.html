@@ -44,6 +44,7 @@
   .hero { display: flex; align-items: stretch; gap: 16px; margin-top: 14px; height: 340px; }
   .motto { width: 74px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .motto .v.long { font-size: 38px; letter-spacing: 4px; }
+  .motto .v.xlong { font-size: 32px; letter-spacing: 2px; }
   .motto .v { writing-mode: vertical-rl; font-family: "Ma Shan Zheng", serif; font-size: 46px; letter-spacing: 10px; color: var(--red); }
   .motto .seal { margin-top: 10px; writing-mode: vertical-rl; font-size: 16px; color: #fff; background: var(--red); padding: 8px 4px; border-radius: 3px; letter-spacing: 3px; }
   .hero-img { flex: 1; border-radius: 18px; overflow: hidden; position: relative;
@@ -141,9 +142,9 @@ document.getElementById("poster").innerHTML = `
   <div class="slogan">${esc(D.slogan)}</div>
 
   <div class="hero">
-    <div class="motto"><div class="v ${motto[0].length > 4 ? "long" : ""}">${esc(motto[0])}</div><div class="seal">${esc(D.motto_label || "校训")}</div></div>
+    <div class="motto"><div class="v ${motto[0].length > 6 ? "xlong" : motto[0].length > 4 ? "long" : ""}">${esc(motto[0])}</div><div class="seal">${esc(D.motto_label || "校训")}</div></div>
     <div class="hero-img"><img src="${D.hero}"></div>
-    <div class="motto"><div class="v ${(motto[1] || "").length > 4 ? "long" : ""}">${esc(motto[1] || "")}</div><div class="seal">${esc(D.founded)}</div></div>
+    <div class="motto"><div class="v ${(motto[1] || "").length > 6 ? "xlong" : (motto[1] || "").length > 4 ? "long" : ""}">${esc(motto[1] || "")}</div><div class="seal">${esc(D.founded)}</div></div>
   </div>
 
   <div class="basic">
@@ -151,7 +152,7 @@ document.getElementById("poster").innerHTML = `
     ${D.basic.map(([k, v]) => `<div><small>${esc(k)}</small><span>${esc(v)}</span></div>`).join("")}
   </div>
 
-  <div class="ranks">${D.rankings.map(r => `
+  <div class="ranks" style="grid-template-columns: repeat(${D.rankings.length}, 1fr)">${D.rankings.map(r => `
     <div class="rank"><div class="num ${r.value.length > 4 ? "long" : ""}">${esc(r.value)}<em>${esc(r.unit)}</em></div>
     <div class="lb">${esc(r.label)}</div><div class="yr">${esc(r.year)}</div></div>`).join("")}
   </div>
@@ -162,7 +163,9 @@ document.getElementById("poster").innerHTML = `
       <div class="note">★ <b>${esc(D.eval_note)}</b></div>`)}
     ${h("m3", 3, "王牌专业", `<div class="chips">${D.majors.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>
       <div class="note">以 <b>${esc(D.known_for)}</b> 著称</div>`)}
-    ${h("m4", 4, "就业深造", `<div class="bigrate"><strong>${esc(D.career.rate_value)}</strong><span>${esc(D.career.rate_label)}<br>(${esc(D.career.rate_year)})</span></div>
+    ${h("m4", 4, "就业深造", `${D.career.rate_value
+        ? `<div class="bigrate"><strong>${esc(D.career.rate_value)}</strong><span>${esc(D.career.rate_label)}<br>(${esc(D.career.rate_year)})</span></div>`
+        : `<div class="note" style="margin-top:0"><b>${esc(D.career.title)}</b></div>`}
       <div class="chips" style="margin-top:6px">${D.career.directions.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>`)}
     ${h("m5", 5, "知名校友", `<div class="kv">${D.alumni.map(([n, t]) => `<div><b>${esc(n)}</b>${esc(t)}</div>`).join("")}</div>`)}
     ${h("m6", 6, "校园风物", `<div class="kv">${D.landmarks.map(([n, t]) => `<div class="lm"><b>${esc(n)}</b><span>${esc(t)}</span></div>`).join("")}</div>`)}

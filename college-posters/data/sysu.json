@@ -96,13 +96,13 @@
     "计算机科学与技术"
   ],
   "career": {
-    "rate_value": "待补",
-    "rate_label": "本科毕业生深造率",
-    "rate_year": "核实中",
+    "rate_value": "70%+",
+    "rate_label": "毕业生留在广东工作",
+    "rate_year": "2025届",
     "directions": [
-      "医疗卫生",
-      "金融与互联网",
-      "大湾区科技企业"
+      "华为",
+      "中广核",
+      "南方电网"
     ]
   },
   "alumni": [

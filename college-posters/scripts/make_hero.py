@@ -30,6 +30,16 @@ HEROES = {
     "bnu": ("library", "#ddd5c4", "#2f5f8f", "#d4e6f1"),       # 主楼
     "tju": ("twin", "#dcd6cb", "#2f5f8f", "#d2e4f2"),          # 北洋园
     "nankai": ("library", "#c9b79a", "#6b3f5f", "#d7e6f0"),    # 主楼 + 马蹄湖
+    "sdu": ("clock", "#c8b08f", "#5a4a6b", "#d6e6f0"),         # 洪家楼老校区
+    "nwpu": ("modern", "#e3e4e8", "#2f4f8f", "#cfe2f3"),       # 长安校区
+    "cau": ("modern", "#e6e2d2", "#4f7a3f", "#d6eadf"),        # 西校区
+    "xmu": ("castle", "#ece4d2", "#b5402f", "#cfe6f2"),        # 嘉庚建筑 + 海
+    "jlu": ("library", "#d9cfbd", "#2f5f8f", "#d4e6f1"),       # 鼎新图书馆
+    "csu": ("clock", "#b8573f", "#3f5f4f", "#d6e8ee"),         # 湘雅老楼
+    "dlut": ("modern", "#e4e2dc", "#2f6f8f", "#cfe3f1"),       # 主楼
+    "ecnu": ("library", "#dcd3c2", "#7a3f3f", "#d4e6f1"),      # 丽娃河畔
+    "hnu": ("gate", "#efe6d6", "#4a4a4a", "#d8e8ee"),          # 岳麓书院
+    "scut": ("library", "#d5c9b0", "#3f6f5a", "#d3e7ee"),      # 五山校区
 }
 
 

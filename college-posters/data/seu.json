@@ -96,13 +96,13 @@
     "生物医学工程"
   ],
   "career": {
-    "rate_value": "待补",
-    "rate_label": "本科毕业生深造率",
-    "rate_year": "核实中",
+    "rate_value": "80%",
+    "rate_label": "毕业生赴重要行业领域就业",
+    "rate_year": "近年",
     "directions": [
-      "电子信息与通信",
-      "建筑设计与工程",
-      "交通与电力"
+      "华为",
+      "国家电网",
+      "中国电科"
     ]
   },
   "alumni": [
