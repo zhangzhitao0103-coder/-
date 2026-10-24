@@ -149,6 +149,7 @@ BATCH211_6 = {"东北林业大学", "东北农业大学", "辽宁大学", "新�
               "石河子大学", "宁夏大学", "延边大学", "西藏大学", "青海大学"}
 BATCH211_7 = {"上海财经大学", "中央财经大学", "对外经济贸易大学", "中南财经政法大学", "西南财经大学",
               "北京外国语大学", "上海外国语大学", "中国政法大学", "北京中医药大学", "中国药科大学"}
+BATCH_LAST = {"天津医科大学", "中国传媒大学", "北京体育大学", "中央音乐学院", "国防科技大学", "海军军医大学", "空军军医大学"}
 
 rows = [(n, "985 / 211", *r) for n, *r in S985] + [(n, "211", *r) for n, *r in S211]
 names = [r[0] for r in rows]
@@ -162,9 +163,9 @@ ws.append(header)
 for i, r in enumerate(rows, 1):
     if r[0] == "北京理工大学":
         status, poster = "已完成", "已出样板"
-    elif r[0] in BATCH1 | BATCH2 | BATCH3 | BATCH4 | BATCH211_1 | BATCH211_2 | BATCH211_3 | BATCH211_4 | BATCH211_5 | BATCH211_6:
+    elif r[0] in BATCH1 | BATCH2 | BATCH3 | BATCH4 | BATCH211_1 | BATCH211_2 | BATCH211_3 | BATCH211_4 | BATCH211_5 | BATCH211_6 | BATCH211_7:
         status, poster = "已完成", "已出图"
-    elif r[0] in BATCH211_7:
+    elif r[0] in BATCH_LAST:
         status, poster = "已收集（待审核）", "已出图（待审核）"
     else:
         status, poster = "待收集", "未制作"

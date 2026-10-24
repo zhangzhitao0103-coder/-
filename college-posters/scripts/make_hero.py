@@ -117,6 +117,13 @@ HEROES = {
     "cupl": ("gate", "#efe6d6", "#7a3f3f", "#d8e8ee"),         # 昌平
     "bucm": ("pagoda", "#8b5a3c", "#3f6f5a", "#d7e8f0"),       # 中医药
     "cpu": ("library", "#d6cdb5", "#3f6f4f", "#d6eadf"),       # 药用植物园
+    "tmu": ("modern", "#e6e6ea", "#2f6f8f", "#cfe2f3"),        # 医学
+    "cuc": ("modern", "#e6e2d8", "#7a3f5f", "#d6e5f0"),        # 定福庄
+    "bsu": ("modern", "#e4e6ea", "#a8463a", "#cfe2f3"),        # 体育馆
+    "ccom": ("library", "#dcd3c2", "#5b3f7a", "#d4e6f1"),      # 音乐厅
+    "nudt": ("castle", "#e6dccb", "#3f5f3f", "#d6e6f0"),       # 哈军工大屋顶
+    "smmu": ("modern", "#e6e6ea", "#2f4f7a", "#cfe2f3"),       # 军医
+    "fmmu": ("modern", "#e6e3dc", "#2f5f8f", "#cfe2f3"),       # 军医
 }
 
 
