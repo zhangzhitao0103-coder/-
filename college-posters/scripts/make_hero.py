@@ -47,6 +47,16 @@ HEROES = {
     "ouc": ("castle", "#ece4d2", "#2f6f8f", "#cfe6f2"),        # 鱼山校区 + 海
     "nwafu": ("clock", "#cdbb98", "#4f6f3f", "#d6eadf"),       # 三号教学楼
     "muc": ("gate", "#efe6d6", "#a8463a", "#d8e8ee"),          # 民族风格校门
+    "ustb": ("clock", "#c8b8a0", "#4f4f5f", "#d6e6f0"),        # 苏式主楼
+    "njust": ("modern", "#e3e4e2", "#3f6f4f", "#d6eadf"),      # 水杉林
+    "nuaa": ("modern", "#e4e6ea", "#2f5f8f", "#cfe2f3"),       # 航空航天
+    "xidian": ("modern", "#e6e3dc", "#a8463a", "#d6e5f0"),     # 长安校区
+    "bjtu": ("library", "#d8cfbe", "#2f4f7a", "#d4e6f1"),      # 思源楼
+    "ecust": ("modern", "#e6e2d8", "#2f6f6f", "#d2e6ee"),      # 徐汇校区
+    "hrbeu": ("castle", "#e6dccb", "#3f6f5a", "#d6e6f0"),      # 哈军工大屋顶
+    "zzu": ("twin", "#dcd6cb", "#a8463a", "#d2e4f2"),          # 主校区
+    "hzau": ("library", "#d6cdb5", "#4f7a3f", "#d6eadf"),      # 狮子山
+    "suda": ("clock", "#b65a45", "#4f4f4f", "#d6e9ef"),        # 东吴钟楼
 }
 
 
