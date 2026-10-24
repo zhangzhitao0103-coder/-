@@ -41,7 +41,9 @@
 - 北理工待核项已于第一批时核掉：软科 14、QS 2027 改为 243、1952 定名、2026 选科；ARWU 2026 名次未查到，仍用 2025。
 
 ## 主视觉
-当前主图都是脚本画的示意插画（北理工 `scripts/make_hero_bit.py`，其余 `scripts/make_hero.py` 按学校选造型），正式版要换实景照片或 AI 插画，放进 `templates/assets/` 并改数据里的 `hero` 字段。
+当前 115 所都是脚本画的示意插画。换图流程：按 `data/主视觉清单.xlsx`（含文件名、建议画面、AI 生图提示词、尺寸与版权要求）准备图片，
+放进 `templates/assets/photos/<学校id>.jpg`，运行 `python3 scripts/apply_heroes.py` 自动改 hero 字段并重新出图。
+图库网站（维基共享资源、Unsplash、Pexels、Pixabay）在本环境被网络策略拦截，会话内无法自行下载。
 
 ## 命令
 ```bash

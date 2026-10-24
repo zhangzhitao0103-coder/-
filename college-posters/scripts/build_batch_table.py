@@ -809,5 +809,6 @@ def build(batch, ids):
     print(dst, summary.max_row - 1, "项待核/待补")
 
 
-for batch, ids in BATCHES.items():
-    build(batch, ids)
+if __name__ == "__main__":
+    for batch, ids in BATCHES.items():
+        build(batch, ids)
