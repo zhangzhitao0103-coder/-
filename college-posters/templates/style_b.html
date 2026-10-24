@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>B版·栏目卡片式</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eef6f3;
+    --card: #ffffff;
+    --ink: #10251c;
+    --ink2: #44574e;
+    --muted: #7b8c84;
+    --g: #0a7a4b;
+    --gd: #0b3d2e;
+    --y: #ffc93c;
+    --line: #d7e8e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #ccc; font-family: "Noto Sans SC", "WenQuanYi Zen Hei", sans-serif; color: var(--ink); }
+  #poster { width: 1080px; height: 1920px; overflow: hidden; position: relative; background: var(--bg); display: flex; flex-direction: column; }
+
+  /* 头图 */
+  .head { position: relative; height: 540px; background: linear-gradient(180deg, #bfe3f2 0%, #e4f3ee 70%, var(--bg) 100%); }
+  .head .img { position: absolute; right: -40px; top: 120px; width: 700px; height: 420px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 35%), linear-gradient(0deg, transparent 0%, #000 25%);
+    -webkit-mask-composite: source-in; mask-composite: intersect; }
+  .head .img img { width: 100%; height: 100%; object-fit: cover; }
+  .ribbon { position: absolute; left: 0; top: 40px; background: var(--gd); color: #fff; font-weight: 900; font-size: 30px; padding: 12px 40px 12px 44px;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 26px) 100%, 0 100%); letter-spacing: 2px; }
+  .ribbon b { color: var(--y); margin-left: 10px; }
+  .hot { position: absolute; right: 44px; top: 46px; font-family: "ZCOOL QingKe HuangYou", sans-serif; font-size: 30px; color: var(--gd); transform: rotate(-3deg); }
+  .name { position: absolute; left: 44px; top: 118px; font-size: 128px; font-weight: 900; color: var(--gd); letter-spacing: 4px; line-height: 1.05;
+    text-shadow: 0 4px 0 rgba(255,255,255,.8); }
+  .en { position: absolute; left: 50px; top: 262px; font-size: 20px; font-weight: 700; color: var(--g); letter-spacing: 3px; text-transform: uppercase; }
+  .rankpill { position: absolute; left: 44px; top: 306px; display: flex; align-items: center; background: var(--gd); color: #fff; border-radius: 0 40px 40px 0; padding: 8px 34px 8px 26px; font-size: 32px; font-weight: 900;
+    clip-path: polygon(16px 0, 100% 0, 100% 100%, 0 100%); }
+  .rankpill b { color: var(--y); font-size: 54px; margin-left: 12px; line-height: 1; }
+  .badges { position: absolute; left: 44px; top: 404px; display: flex; flex-wrap: nowrap; gap: 8px; }
+  .badge { background: rgba(255,255,255,.94); border: 2px solid #fff; box-shadow: 0 3px 10px rgba(11,61,46,.12); border-radius: 26px; padding: 4px 14px 4px 8px; font-size: 21px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .badge i { width: 26px; height: 26px; border-radius: 50%; background: var(--g); color: #fff; font-style: normal; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; }
+  .badge:nth-child(3n+2) i { background: #e0a000; } .badge:nth-child(3n) i { background: #2f7fb5; }
+  .slogan { position: absolute; left: 44px; top: 476px; font-size: 24px; font-weight: 700; color: var(--ink2); }
+  .slogan::before { content: "“"; color: var(--g); font-size: 34px; }
+  .slogan::after { content: "”"; color: var(--g); font-size: 34px; }
+
+  /* 数据条 */
+  .stats { margin: 4px 36px 0; background: var(--card); border-radius: 20px; display: flex; box-shadow: 0 6px 18px rgba(11,61,46,.08); }
+  .stat { flex: 1; text-align: center; padding: 14px 4px 12px; border-right: 1.5px solid var(--line); }
+  .stat:last-child { border-right: 0; }
+  .stat .v { font-size: 44px; font-weight: 900; color: var(--g); line-height: 1.05; }
+  .stat .v.long { font-size: 36px; padding-top: 6px; }
+  .stat .v em { font-style: normal; font-size: 18px; margin-left: 2px; }
+  .stat .l { font-size: 17px; color: var(--ink2); font-weight: 500; }
+  .stat .yr { font-size: 14px; color: var(--muted); }
+
+  /* 栏目 */
+  .secs { flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 14px 36px 0; min-height: 0; }
+  .sec { background: var(--card); border-radius: 20px; padding: 14px 22px 16px; box-shadow: 0 4px 14px rgba(11,61,46,.06); }
+  .sec h2 { display: flex; align-items: center; gap: 12px; font-size: 32px; font-weight: 900; color: var(--gd); margin-bottom: 10px; }
+  .sec h2 .n { width: 46px; height: 46px; border-radius: 50%; background: var(--gd); color: #fff; font-size: 22px; display: inline-flex; align-items: center; justify-content: center; }
+  .sec h2 small { font-size: 18px; color: var(--muted); font-weight: 500; margin-left: auto; }
+  .row { display: flex; gap: 18px; }
+  .row > * { flex: 1; min-width: 0; }
+  .dots div { font-size: 20px; line-height: 1.6; color: var(--ink2); padding-left: 18px; position: relative; }
+  .dots div::before { content: ""; position: absolute; left: 2px; top: 13px; width: 8px; height: 8px; border-radius: 50%; background: var(--g); }
+  .dots b { color: var(--ink); }
+  .check div::before { width: 16px; height: 16px; top: 8px; left: -2px; background: var(--g) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' stroke='white' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  .check div { padding-left: 24px; }
+
+  .years { display: flex; gap: 8px; }
+  .yr-card { flex: 1; background: #f2f8f5; border-radius: 14px; padding: 10px 8px; text-align: center; position: relative; }
+  .yr-card b { display: block; font-size: 30px; font-weight: 900; color: var(--g); line-height: 1.1; }
+  .yr-card span { font-size: 17px; color: var(--ink2); line-height: 1.35; display: block; margin-top: 4px; }
+  .yr-card:not(:last-child)::after { content: "›"; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); color: var(--g); font-size: 26px; font-weight: 900; }
+  .motto { margin-top: 10px; background: linear-gradient(90deg, var(--gd), var(--g)); color: #fff; border-radius: 14px; padding: 10px 18px; display: flex; align-items: center; gap: 16px; }
+  .motto small { background: var(--y); color: var(--gd); font-weight: 900; font-size: 18px; padding: 2px 10px; border-radius: 6px; }
+  .motto b { font-size: 30px; letter-spacing: 8px; font-weight: 900; }
+  .motto span { margin-left: auto; font-size: 17px; opacity: .85; }
+
+  .df { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .df div { border: 2px solid #2f7fb5; border-radius: 14px; text-align: center; padding: 8px 6px 0; overflow: hidden; font-size: 19px; font-weight: 700; }
+  .df div span { display: block; margin: 8px -6px 0; background: #2f7fb5; color: #fff; font-size: 15px; padding: 3px 0; font-weight: 500; }
+  .df div.top { border-color: #d0453a; } .df div.top span { background: #d0453a; }
+  .majors { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .majors span { background: #f2f8f5; border-radius: 8px; padding: 3px 12px; font-size: 19px; font-weight: 500; }
+  .bluebar { margin-top: 10px; background: linear-gradient(90deg, #1666c5, #2f8fe0); color: #fff; text-align: center; border-radius: 22px; padding: 6px; font-size: 19px; font-weight: 700; }
+
+  .rate { display: flex; align-items: baseline; gap: 8px; }
+  .rate strong { font-size: 56px; font-weight: 900; color: #d0453a; line-height: 1.1; }
+  .rate span { font-size: 18px; color: var(--ink2); }
+  .ppl div { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .ppl i { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #0a7a4b, #2f7fb5); color: #fff; font-style: normal; font-weight: 900; font-size: 20px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ppl b { font-size: 21px; } .ppl span { font-size: 18px; color: var(--ink2); margin-left: 6px; }
+
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .tile { border-radius: 14px; background: #f2f8f5; display: flex; gap: 10px; padding: 10px 10px; align-items: flex-start; }
+  .tile .ic { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--g); }
+  .tile:nth-child(2) .ic { background: #2f7fb5; } .tile:nth-child(3) .ic { background: #e0a000; }
+  .tile .ic svg { width: 26px; height: 26px; }
+  .tile b { display: block; font-size: 18px; line-height: 1.3; }
+  .tile span { display: block; font-size: 15px; color: var(--ink2); line-height: 1.35; margin-top: 2px; }
+  .req div { display: flex; justify-content: space-between; background: #f2f8f5; border-radius: 10px; padding: 6px 12px; font-size: 18px; margin-top: 6px; }
+  .req b { color: var(--g); }
+  .req h4 { font-size: 19px; margin-top: 8px; }
+
+  /* 底栏 */
+  .foot { margin-top: auto; background: var(--gd); color: #fff; display: flex; align-items: center; gap: 22px; padding: 18px 36px; }
+  .foot .qr { width: 118px; height: 118px; background: #fff; padding: 8px; border-radius: 10px; flex-shrink: 0; }
+  .foot .qr svg { width: 100%; height: 100%; display: block; }
+  .foot .t { flex: 1; }
+  .foot .t p { font-size: 34px; font-weight: 900; }
+  .foot .t p b { color: var(--y); }
+  .foot .t div { font-size: 19px; opacity: .85; margin-top: 6px; }
+  .foot .t small { display: block; font-size: 13px; opacity: .6; margin-top: 8px; }
+</style>
+</head>
+<body>
+<!--DATA-->
+<div id="poster"></div>
+<script>
+const D = window.DATA;
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const pad = n => String(n).padStart(2, "0");
+const [r0, ...rs] = D.rankings;
+const sec = (n, title, body, sub = "") =>
+  `<section class="sec"><h2><span class="n">${pad(n)}</span>${title}${sub ? `<small>${sub}</small>` : ""}</h2>${body}</section>`;
+// 风物图标：楼 / 书 / 星（正式版可换成各地标实拍小图）
+const ICONS = [
+  '<svg viewBox="0 0 24 24" fill="#fff"><path d="M3 21h18v-2h-1V9l-8-5-8 5v10H3v2zm4-3v-6h2v6H7zm4 0v-6h2v6h-2zm4 0v-6h2v6h-2z"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="#fff"><path d="M4 4h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a2 2 0 0 0-2 2 2 2 0 0 0-2-2H4V4zm2 2v11h4l1 .3V7a1 1 0 0 0-1-1H6zm12 0h-4a1 1 0 0 0-1 1v10.3l1-.3h4V6z"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17l-6.1 3.4 1.5-6.8L2.2 9l6.9-.7z"/></svg>'];
+
+document.getElementById("poster").innerHTML = `
+  <div class="head">
+    <div class="img"><img src="${D.hero}"></div>
+    <div class="ribbon">每日一所好大学<b>第${pad(D.no)}站</b></div>
+    <div class="hot">${esc(D.city)} · 创办于${esc(D.founded)}年</div>
+    <div class="name">${esc(D.name)}</div>
+    <div class="en">${esc(D.name_en)}</div>
+    <div class="rankpill">${esc(r0.label.replace("排名", ""))}${esc(r0.year)} 全国<b>${esc(r0.value)}</b></div>
+    <div class="badges">${D.tags.map(t => `<span class="badge"><i>✓</i>${esc(t)}</span>`).join("")}</div>
+    <div class="slogan">${esc(D.slogan)}</div>
+  </div>
+
+  <div class="stats">
+    ${D.basic.slice(0, 1).map(([k, v]) => `<div class="stat"><div class="v" style="font-size:30px;padding-top:10px">${esc(v.split(" · ")[0])}</div><div class="l">${esc(v.split(" · ")[1] || k)}</div><div class="yr">${esc(k)}</div></div>`).join("")}
+    ${rs.map(r => `<div class="stat"><div class="v ${r.value.length > 4 ? "long" : ""}">${esc(r.value)}<em>${esc(r.unit)}</em></div><div class="l">${esc(r.label)}</div><div class="yr">${esc(r.year)}</div></div>`).join("")}
+  </div>
+
+  <div class="secs">
+    ${sec(1, "校史底蕴", `
+      <div class="years">${D.history.map(([y, t]) => `<div class="yr-card"><b>${esc(y)}</b><span>${esc(t)}</span></div>`).join("")}</div>
+      <div class="motto"><small>校训</small><b>${esc(D.motto)}</b><span>${esc(D.motto_note)}</span></div>`, esc(D.basic.find(b => b[0] === "校区")?.[1] || ""))}
+    ${sec(2, "王牌学科", `
+      <div class="df">${D.double_first.map((s, i) => `<div class="${i === 0 ? "top" : ""}">${esc(s)}<span>${i === 0 && D.eval_note.includes("A+") ? "双一流 · A+" : "双一流建设学科"}</span></div>`).join("")}</div>
+      <div class="majors">${D.majors.map(s => `<span>${esc(s)}</span>`).join("")}</div>
+      <div class="bluebar">以 ${esc(D.known_for)} 著称</div>`)}
+    ${sec(3, "就业深造 · 知名校友", `
+      <div class="row">
+        <div><div class="rate"><strong>${esc(D.career.rate_value)}</strong><span>${esc(D.career.rate_label)}（${esc(D.career.rate_year)}）</span></div>
+          <div class="dots check">${D.career.directions.map(s => `<div>${esc(s)}</div>`).join("")}</div></div>
+        <div class="ppl">${D.alumni.map(([n, t]) => `<div><i>${esc(n[0])}</i><b>${esc(n)}</b><span>${esc(t)}</span></div>`).join("")}</div>
+      </div>`)}
+    ${sec(4, "校园风物 · 适合谁来", `
+      <div class="tiles">${D.landmarks.map(([n, t], i) => `<div class="tile"><div class="ic">${ICONS[i % 3]}</div><div><b>${esc(n)}</b><span>${esc(t)}</span></div></div>`).join("")}</div>
+      <div class="row" style="margin-top:10px">
+        <div class="dots">${D.fit.map(s => `<div>${esc(s)}</div>`).join("")}</div>
+        <div class="req"><h4 style="margin-top:0">新高考选科要求</h4>${D.subject_req.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")}</div>
+      </div>`)}
+  </div>
+
+  <div class="foot">
+    <div class="qr">${window.QR}</div>
+    <div class="t"><p>${esc(D.encourage).replace(esc(D.short), `<b>${esc(D.short)}</b>`)}</p>
+      <div>扫码访问官网 · ${esc(D.website_label)}</div>
+      <small>${esc(D.source)}</small></div>
+  </div>
+`;
+
+window.checkOverflow = () => {
+  const bad = [];
+  const secs = document.querySelector(".secs").getBoundingClientRect().bottom;
+  const last = document.querySelector(".sec:last-child").getBoundingClientRect().bottom;
+  const foot = document.querySelector(".foot").getBoundingClientRect();
+  if (last > foot.top + 1) bad.push("栏目压到底栏 " + Math.round(last - foot.top) + "px");
+  if (foot.bottom > 1921) bad.push("底栏超出 " + Math.round(foot.bottom - 1920) + "px");
+  return bad;
+};
+</script>
+</body>
+</html>
