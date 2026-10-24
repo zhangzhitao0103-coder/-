@@ -87,6 +87,16 @@ HEROES = {
     "hfut": ("castle", "#e8e0cf", "#3f6f5a", "#cfe6f2"),       # 翡翠湖
     "bjfu": ("library", "#d4c8ad", "#3f6f3f", "#d6eadf"),      # 林业
     "ncepu": ("modern", "#e4e6ea", "#2f5f9f", "#cfe2f3"),      # 电力
+    "gzu": ("castle", "#e8e0cf", "#3f6f5a", "#d6e6f0"),        # 花溪校区
+    "gxu": ("library", "#d8cfbe", "#2f5f7a", "#d4e6f1"),       # 西校园
+    "hainu": ("modern", "#ece8dc", "#2f7f8f", "#cfe8f2"),      # 海甸岛
+    "chd": ("modern", "#e4e2dc", "#2f4f8f", "#d2e6ee"),        # 本部
+    "hunnu": ("library", "#d6cdb5", "#7a3f3f", "#d6eadf"),     # 岳麓山
+    "tyut": ("clock", "#c8b8a0", "#4f4f5f", "#d6e6f0"),        # 迎西校区
+    "hebut": ("library", "#c9b79a", "#2f4f6f", "#d7e6f0"),     # 北洋工艺
+    "dlmu": ("modern", "#e6e6ea", "#1f4f7f", "#cfe2f3"),       # 航海
+    "imu": ("gate", "#efe6d6", "#2f6f8f", "#d8e8ee"),          # 北疆
+    "ahu": ("library", "#d8cfbe", "#3f5f7a", "#d4e6f1"),       # 文典阁
 }
 
 
