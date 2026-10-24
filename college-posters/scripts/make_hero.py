@@ -77,6 +77,16 @@ HEROES = {
     "cumt": ("modern", "#e3ddd0", "#4f4f5f", "#d3e7ee"),       # 南湖校区
     "nwu": ("gate", "#efe6d6", "#7a4a3c", "#d8e8ee"),          # 太白校区
     "ynu": ("library", "#c9b79a", "#3f6f5a", "#d7e6f0"),       # 会泽院
+    "dhu": ("modern", "#e6e3dc", "#7a3f5f", "#d6e5f0"),        # 松江校区
+    "upc": ("modern", "#e4e2dc", "#2f4f6f", "#d2e6ee"),        # 青岛校区
+    "ncu": ("castle", "#ece6d6", "#3f6f6f", "#cfe6f2"),        # 前湖
+    "cugb": ("pagoda", "#8b6a4c", "#4f5f3f", "#d7e8f0"),       # 地学
+    "cumtb": ("modern", "#e3ddd0", "#4f4f5f", "#d3e7ee"),      # 学院路
+    "fzu": ("modern", "#e6e6ea", "#2f6f8f", "#cfe2f3"),        # 旗山校区
+    "scnu": ("library", "#dcd3c2", "#2f5f8f", "#d4e6f1"),      # 石牌校区
+    "hfut": ("castle", "#e8e0cf", "#3f6f5a", "#cfe6f2"),       # 翡翠湖
+    "bjfu": ("library", "#d4c8ad", "#3f6f3f", "#d6eadf"),      # 林业
+    "ncepu": ("modern", "#e4e6ea", "#2f5f9f", "#cfe2f3"),      # 电力
 }
 
 
