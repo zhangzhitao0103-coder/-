@@ -40,6 +40,13 @@ HEROES = {
     "ecnu": ("library", "#dcd3c2", "#7a3f3f", "#d4e6f1"),      # 丽娃河畔
     "hnu": ("gate", "#efe6d6", "#4a4a4a", "#d8e8ee"),          # 岳麓书院
     "scut": ("library", "#d5c9b0", "#3f6f5a", "#d3e7ee"),      # 五山校区
+    "uestc": ("modern", "#e4e6ea", "#2f4f8f", "#cfe2f3"),      # 清水河校区
+    "cqu": ("clock", "#c9b18f", "#4f5f6f", "#d6e6f0"),         # A区老楼
+    "lzu": ("library", "#d6cbb5", "#3f5f7a", "#d8e8f2"),       # 积石堂
+    "neu": ("library", "#d0c3a8", "#2f4f6f", "#d4e6f1"),       # 汉卿会堂
+    "ouc": ("castle", "#ece4d2", "#2f6f8f", "#cfe6f2"),        # 鱼山校区 + 海
+    "nwafu": ("clock", "#cdbb98", "#4f6f3f", "#d6eadf"),       # 三号教学楼
+    "muc": ("gate", "#efe6d6", "#a8463a", "#d8e8ee"),          # 民族风格校门
 }
 
 

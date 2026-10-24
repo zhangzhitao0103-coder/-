@@ -137,7 +137,7 @@ document.getElementById("poster").innerHTML = `
     <div class="city"><i></i>${esc(D.city)}</div>
   </div>
   <h1 class="title" style="font-size:${Math.min(128, Math.floor(920 / D.name.length))}px">${esc(D.name)}</h1>
-  <div class="en">${esc(D.name_en)}</div>
+  <div class="en" style="${D.name_en.length > 48 ? "font-size:16px;letter-spacing:3px" : ""}">${esc(D.name_en)}</div>
   <div class="tags">${D.tags.map((t, i) => `<span class="tag ${i < 3 ? "hot" : ""}">${esc(t)}</span>`).join("")}</div>
   <div class="slogan">${esc(D.slogan)}</div>
 
