@@ -167,9 +167,11 @@ document.getElementById("poster").innerHTML = `
         ? `<div class="bigrate"><strong>${esc(D.career.rate_value)}</strong><span>${esc(D.career.rate_label)}<br>(${esc(D.career.rate_year)})</span></div>`
         : `<div class="note" style="margin-top:0"><b>${esc(D.career.title)}</b></div>`}
       <div class="chips" style="margin-top:6px">${D.career.directions.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>`)}
-    ${h("m5", 5, "知名校友", `<div class="kv">${D.alumni.length
-        ? D.alumni.map(([n, t]) => `<div><b>${esc(n)}</b>${esc(t)}</div>`).join("")
-        : `<div>校友信息核实中，后续补充</div>`}</div>`)}
+    ${D.alumni.length || !D.highlights
+      ? h("m5", 5, "知名校友", `<div class="kv">${D.alumni.length
+          ? D.alumni.map(([n, t]) => `<div><b>${esc(n)}</b>${esc(t)}</div>`).join("")
+          : `<div>校友信息核实中，后续补充</div>`}</div>`)
+      : h("m5", 5, "特色亮点", `<div class="kv">${D.highlights.map(([n, t]) => `<div class="lm"><b>${esc(n)}</b><span>${esc(t)}</span></div>`).join("")}</div>`)}
     ${h("m6", 6, "校园风物", `<div class="kv">${D.landmarks.map(([n, t]) => `<div class="lm"><b>${esc(n)}</b><span>${esc(t)}</span></div>`).join("")}</div>`)}
     ${h("m7 full", 7, "适合什么样的学生", `<div class="fit">
       <div class="list">${D.fit.map(s => `<div>${esc(s)}</div>`).join("")}</div>
