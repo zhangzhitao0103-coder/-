@@ -16,7 +16,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATES = ROOT / "templates"
 OUTPUT = ROOT / "output"
-CHROMIUM = next(Path("/opt/pw-browsers").glob("chromium-*/chrome-linux/chrome"), None)
+CHROMIUM = next(Path("/opt/pw-browsers").glob("chromium-*/chrome-linux*/chrome"), None)
 CHROMIUM = str(CHROMIUM) if CHROMIUM else None
 TEMPLATE = TEMPLATES / "poster.html"
 

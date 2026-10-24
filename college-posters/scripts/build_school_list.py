@@ -128,6 +128,9 @@ S211 = [
     ("石河子大学", "新疆", "石河子", "新疆生产建设兵团", "www.shzu.edu.cn", ""),
 ]
 
+BATCH1 = {"清华大学", "北京大学", "浙江大学", "上海交通大学", "复旦大学", "南京大学",
+          "中国科学技术大学", "武汉大学", "华中科技大学", "西安交通大学"}
+
 rows = [(n, "985 / 211", *r) for n, *r in S985] + [(n, "211", *r) for n, *r in S211]
 names = [r[0] for r in rows]
 assert len(set(names)) == len(names) == 115, len(names)
@@ -138,8 +141,13 @@ ws.title = "院校总名单"
 header = ["序号", "校名", "层次", "省份", "城市", "主管部门", "官网", "备注", "资料状态", "海报状态"]
 ws.append(header)
 for i, r in enumerate(rows, 1):
-    status = "已完成" if r[0] == "北京理工大学" else "待收集"
-    ws.append([i, *r, status, "已出样板" if r[0] == "北京理工大学" else "未制作"])
+    if r[0] == "北京理工大学":
+        status, poster = "已完成", "已出样板"
+    elif r[0] in BATCH1:
+        status, poster = "已收集（待审核）", "已出图（待审核）"
+    else:
+        status, poster = "待收集", "未制作"
+    ws.append([i, *r, status, poster])
 for c in ws[1]:
     c.font = Font(bold=True, color="FFFFFF")
     c.fill = PatternFill("solid", fgColor="0B6B3F")
@@ -150,7 +158,7 @@ for row in ws.iter_rows(min_row=2):
         row[2].fill = PatternFill("solid", fgColor="E3F1E8")
     if "军校" in (row[7].value or ""):
         row[7].fill = PatternFill("solid", fgColor="FFF2CC")
-for col, w in zip("ABCDEFGHIJ", [6, 22, 10, 9, 10, 18, 24, 22, 10, 10]):
+for col, w in zip("ABCDEFGHIJ", [6, 22, 10, 9, 10, 18, 24, 22, 16, 16]):
     ws.column_dimensions[col].width = w
 ws.freeze_panes = "C2"
 ws.auto_filter.ref = ws.dimensions

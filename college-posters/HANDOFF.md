@@ -5,7 +5,7 @@
 
 ## 五步流程与进度
 1. 设计海报内容框架 —— ✅ 完成（见 `data/字段表_北京理工大学样板.xlsx` 的「字段字典」）
-2. 收集全部院校信息 —— ⏳ 进行中：总名单已完成，北理工已完成，其余待收集
+2. 收集全部院校信息 —— ⏳ 进行中：总名单、北理工已完成；第一批 10 所（清北浙交复南科武华西交）已收集出图，待用户审核，见 `data/字段表_第一批.xlsx`
 3. 选一所学校做样板 —— ✅ 北京理工大学，用户已确认融合版
 4. 按模板精简内容、汇总 —— 待做
 5. 批量出图 —— 待做
@@ -18,7 +18,7 @@
 - **收集顺序**：先 985 后 211，每批 10 所，交用户审核后再做下一批。985 按软科 2026 名次排序。
   - 第一批：清华、北大、浙大、上交、复旦、南大、中科大、武大、华科、西交
 - **军校**：国防科技大学、海军军医大学、空军军医大学都做，排在最后。
-- **网络**：用户已在环境里放开 `www.shanghairanking.cn`、`www.moe.gov.cn`、`gaokao.chsi.com.cn`、`*.edu.cn`，用于批量核实数据。
+- **网络**：交接时说已放开 `www.shanghairanking.cn`、`www.moe.gov.cn`、`gaokao.chsi.com.cn`、`*.edu.cn`，用于批量核实数据。**实测（2026-10-24）仍被 403 拒绝**，第一批改用 WebSearch 转载源核实，字段表里注明了来源与「待核」项。
 
 ## 每所学校要收集的字段
 以 `data/bit.json` 为准（模板直接读取）：校名/英文名/简称、官网、城市、身份标签、一句话定位、校训、创办年份、
@@ -31,10 +31,11 @@
 - 排名一律写「榜单 + 年份」；不写无出处的「最好」「第一」。
 - 校友只写姓名和头衔，不放照片。
 - 第五轮学科评估未官方公布，只用第四轮。
-- 北理工字段表里还有几项待核（软科 2026 第 14、深造率 71.9%、1952/1951 定名年份、选科要求），网络通了顺手核掉。
+- 排名口径（第一批起）：软科中国 2026、QS 2027、ARWU 2026；清北双一流学科自主确定，第 4 张卡改放「第四轮学科评估 A+ 数」。
+- 北理工待核项已于第一批时核掉：软科 14、QS 2027 改为 243、1952 定名、2026 选科；ARWU 2026 名次未查到，仍用 2025。
 
 ## 主视觉
-当前北理工主图是脚本画的示意插画（`scripts/make_hero_bit.py`），正式版要换实景照片或 AI 插画，放进 `templates/assets/` 并改数据里的 `hero` 字段。
+当前主图都是脚本画的示意插画（北理工 `scripts/make_hero_bit.py`，其余 `scripts/make_hero.py` 按学校选造型），正式版要换实景照片或 AI 插画，放进 `templates/assets/` 并改数据里的 `hero` 字段。
 
 ## 命令
 ```bash
@@ -42,6 +43,8 @@ pip install playwright qrcode openpyxl
 python3 scripts/render.py data/bit.json
 python3 scripts/build_school_list.py      # 重新生成总名单
 python3 scripts/build_field_table.py      # 重新生成北理工字段表
+python3 scripts/make_hero.py              # 生成各校示意主图
+python3 scripts/build_batch_table.py      # 生成批次字段表（含待核汇总）
 ```
 Playwright 用预装的 Chromium（`/opt/pw-browsers`），不要运行 `playwright install`。
 

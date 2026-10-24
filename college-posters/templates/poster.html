@@ -43,6 +43,7 @@
   /* 主视觉 */
   .hero { display: flex; align-items: stretch; gap: 16px; margin-top: 14px; height: 340px; }
   .motto { width: 74px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .motto .v.long { font-size: 38px; letter-spacing: 4px; }
   .motto .v { writing-mode: vertical-rl; font-family: "Ma Shan Zheng", serif; font-size: 46px; letter-spacing: 10px; color: var(--red); }
   .motto .seal { margin-top: 10px; writing-mode: vertical-rl; font-size: 16px; color: #fff; background: var(--red); padding: 8px 4px; border-radius: 3px; letter-spacing: 3px; }
   .hero-img { flex: 1; border-radius: 18px; overflow: hidden; position: relative;
@@ -134,15 +135,15 @@ document.getElementById("poster").innerHTML = `
     <div class="series">高考择校 · 名校速览</div>
     <div class="city"><i></i>${esc(D.city)}</div>
   </div>
-  <h1 class="title">${esc(D.name)}</h1>
+  <h1 class="title" style="font-size:${Math.min(128, Math.floor(920 / D.name.length))}px">${esc(D.name)}</h1>
   <div class="en">${esc(D.name_en)}</div>
   <div class="tags">${D.tags.map((t, i) => `<span class="tag ${i < 3 ? "hot" : ""}">${esc(t)}</span>`).join("")}</div>
   <div class="slogan">${esc(D.slogan)}</div>
 
   <div class="hero">
-    <div class="motto"><div class="v">${esc(motto[0])}</div><div class="seal">校训</div></div>
+    <div class="motto"><div class="v ${motto[0].length > 4 ? "long" : ""}">${esc(motto[0])}</div><div class="seal">${esc(D.motto_label || "校训")}</div></div>
     <div class="hero-img"><img src="${D.hero}"></div>
-    <div class="motto"><div class="v">${esc(motto[1] || "")}</div><div class="seal">${esc(D.founded)}</div></div>
+    <div class="motto"><div class="v ${(motto[1] || "").length > 4 ? "long" : ""}">${esc(motto[1] || "")}</div><div class="seal">${esc(D.founded)}</div></div>
   </div>
 
   <div class="basic">
@@ -183,6 +184,9 @@ window.checkOverflow = () => {
   const bad = [];
   document.querySelectorAll(".m").forEach(el => {
     if (el.scrollHeight > el.clientHeight + 1) bad.push(el.querySelector("h3").innerText.trim());
+  });
+  document.querySelectorAll(".m .bd *, .basic div, .rank").forEach(el => {
+    if (el.scrollWidth > el.clientWidth + 1) bad.push("横向溢出：" + el.innerText.trim().slice(0, 12));
   });
   const p = document.getElementById("poster");
   const g = document.querySelector(".grid").getBoundingClientRect().bottom;
