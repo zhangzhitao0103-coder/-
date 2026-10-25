@@ -163,10 +163,8 @@ ws.append(header)
 for i, r in enumerate(rows, 1):
     if r[0] == "北京理工大学":
         status, poster = "已完成", "已出样板"
-    elif r[0] in BATCH1 | BATCH2 | BATCH3 | BATCH4 | BATCH211_1 | BATCH211_2 | BATCH211_3 | BATCH211_4 | BATCH211_5 | BATCH211_6 | BATCH211_7:
+    elif r[0] in BATCH1 | BATCH2 | BATCH3 | BATCH4 | BATCH211_1 | BATCH211_2 | BATCH211_3 | BATCH211_4 | BATCH211_5 | BATCH211_6 | BATCH211_7 | BATCH_LAST:
         status, poster = "已完成", "已出图"
-    elif r[0] in BATCH_LAST:
-        status, poster = "已收集（待审核）", "已出图（待审核）"
     else:
         status, poster = "待收集", "未制作"
     ws.append([i, *r, status, poster])
