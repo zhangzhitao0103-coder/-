@@ -5,7 +5,7 @@
 
 ## 五步流程与进度
 1. 设计海报内容框架 —— ✅ 完成（见 `data/字段表_北京理工大学样板.xlsx` 的「字段字典」）
-2. 收集全部院校信息 —— ✅ 115 所全部出图并经用户确认；发布顺序已确认（data/发布顺序.xlsx，`python3 scripts/export_seq.py` 导出到 output/发布序号版/，已 gitignore）。待核项已核验一轮（514→254，余下多需官网）。待办：主视觉暂保留占位插画（用户选C；日后换图：照片放 templates/assets/photos/<id>.jpg 后跑 apply_heroes.py 再跑 export_seq.py）；海军军医、空军军医校训仍为寄语
+2. 收集全部院校信息 —— ✅ 115 所全部出图并经用户确认；发布顺序已确认（data/发布顺序.xlsx，`python3 scripts/export_seq.py` 导出到 output/发布序号版/，已 gitignore）。待核项已核验一轮（514→254，余下多需官网）。待办：主视觉暂保留占位插画（用户选C；日后换图：照片放 templates/assets/photos/<id>.jpg 后跑 apply_heroes.py 再跑 export_seq.py）；海军军医、空军军医保留寄语（用户决定）
 3. 选一所学校做样板 —— ✅ 北京理工大学，用户已确认融合版
 4. 按模板精简内容、汇总 —— 待做
 5. 批量出图 —— 待做
