@@ -183,14 +183,14 @@ SRC = {"融合版": "融合", "冷知识开头式": "Claude方案B", "家长干�
        "标准介绍型": "你的方案A", "兴趣引导型": "你的方案B", "校史故事型": "你的方案C"}
 
 _ml = openpyxl.load_workbook(ROOT / "data" / "985_211院校总名单.xlsx").active
-LOC = {r[1]: (r[3], r[4]) for r in _ml.iter_rows(min_row=2, values_only=True)}  # 校名 -> (省份, 城市)，主校区所在地
+LOC = {r[1]: ("985" if "985" in r[2] else "211", r[3], r[4]) for r in _ml.iter_rows(min_row=2, values_only=True)}  # 校名 -> (层次, 省份, 城市)，主校区所在地
 
 wb = openpyxl.Workbook()
 ws = wb.active
 ws.title = "发布排期（融合版）"
-ws.append(["序号", "日期", "星期", "校名", "省份", "城市", "当天版本", "文案（直接复制）", "字数"])
+ws.append(["序号", "日期", "星期", "校名", "层次", "省份", "城市", "当天版本", "文案（直接复制）", "字数"])
 ws2 = wb.create_sheet("六版全集")
-ws2.append(["序号", "日期", "星期", "校名", "省份", "城市"] + [f"{v}\n（{SRC[v]}）" for v in VERS])
+ws2.append(["序号", "日期", "星期", "校名", "层次", "省份", "城市"] + [f"{v}\n（{SRC[v]}）" for v in VERS])
 long_ = []
 for i, sid in enumerate(ORDER, 1):
     day = START + dt.timedelta(days=i - 1)
@@ -210,7 +210,7 @@ for i, sid in enumerate(ORDER, 1):
 
 wrap = Alignment(wrap_text=True, vertical="top")
 hdr = PatternFill("solid", fgColor="1F3A5F")
-for sh, widths in ((ws, [6, 8, 6, 16, 8, 8, 16, 60, 6]), (ws2, [6, 8, 6, 16, 8, 8] + [46] * 6)):
+for sh, widths in ((ws, [6, 8, 6, 16, 6, 8, 8, 16, 60, 6]), (ws2, [6, 8, 6, 16, 6, 8, 8] + [46] * 6)):
     for c in sh[1]:
         c.font = Font(bold=True, color="FFFFFF")
         c.fill = hdr
@@ -221,15 +221,16 @@ for sh, widths in ((ws, [6, 8, 6, 16, 8, 8, 16, 60, 6]), (ws2, [6, 8, 6, 16, 8, 
         for c in r:
             c.alignment = wrap
         if r[2].value == "周三":
-            for c in r[:7]:
+            for c in r[:8]:
                 c.fill = PatternFill("solid", fgColor="FFF2CC")
-    sh.freeze_panes = "G2"
+    sh.freeze_panes = "H2"
 
 ws3 = wb.create_sheet("使用说明")
 for line in [
     ["发布节奏", "2026-11-02（周一）起每天 1 所，共 115 天；周三（黄底）为家长干货日，融合版自动换成选科/适合的孩子/去向 + 私信引导"],
     ["融合版结构", "开头钩子（冷知识/兴趣提问/校史，按学校素材选）→ 每天认识一所大学｜校名 → 身份+排名 → 优势学科 → 校训 → 鼓励"],
     ["六版来源", "融合版；Claude方案B 冷知识开头式；Claude方案C 家长干货式；你的方案A 标准介绍型；你的方案B 兴趣引导型；你的方案C 校史故事型"],
+    ["层次", "985 高校填 985（同时也是 211），其余填 211"],
     ["省份/城市", "主校区所在地，取自院校总名单（与海报一致）"],
     ["数据口径", "排名、学科、校训、选科、去向等全部取自海报数据（与海报一致）；海军军医、空军军医为「寄语」"],
     ["字数", "不含换行、含表情；建议 ≤150 字，避免朋友圈折叠成「全文」"],
