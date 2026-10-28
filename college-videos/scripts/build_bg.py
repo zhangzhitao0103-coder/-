@@ -34,7 +34,7 @@ def shot_filter(framed, src_len, need, zoom_from, zoom_to, crop=FRAMED_CROP):
     if not framed:
         return (f"[0:v]{pts},fps={FPS},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
                 f"scale=w='{W}*{z}':h='{H}*{z}':eval=frame,crop={W}:{H},"
-                f"tpad=stop_mode=clone:stop_duration={need:.3f},trim=duration={need:.3f},setsar=1[out]")
+                f"tpad=stop_mode=clone:stop_duration={need:.3f},trim=end_frame={round(need * FPS)},setsar=1[out]")
     cw, ch, cx, cy = crop
     card_w = 900
     card_h = int(card_w * ch / cw) // 2 * 2
@@ -42,7 +42,7 @@ def shot_filter(framed, src_len, need, zoom_from, zoom_to, crop=FRAMED_CROP):
             f"[a]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},boxblur=30:2,eq=brightness=-0.12[bg];"
             f"[b]scale=w='{card_w}*{z}':h='{card_h}*{z}':eval=frame,crop={card_w}:{card_h}[card];"
             f"[bg][card]overlay=({W}-{card_w})/2:250,"
-            f"tpad=stop_mode=clone:stop_duration={need:.3f},trim=duration={need:.3f},setsar=1[out]")
+            f"tpad=stop_mode=clone:stop_duration={need:.3f},trim=end_frame={round(need * FPS)},setsar=1[out]")
 
 
 def chunk_starts(scene):
@@ -85,20 +85,26 @@ def main():
     tmp = build / "shots"
     tmp.mkdir(exist_ok=True)
     n = 0
+    clock = 0.0       # 理论时间
+    frame = 0         # 已排好的整帧数：每个镜头按整帧切，避免误差累积导致画面与字幕错位
     for i, scene in enumerate(tl["scenes"]):
         shots = segs[scene["scene"]]["shots"]
         t0 = 0 if i == 0 else scene["start"]                      # 第一段从 0 秒起，补上配音前的留白
         durs = shot_durations(scene, shots, t0)
-        for k, (sh, each) in enumerate(zip(shots, durs)):
+        for k, (sh, d) in enumerate(zip(shots, durs)):
+            clock += d
+            frames = round(clock * FPS) - frame
+            frame += frames
+            each = frames / FPS
             a, b = sh["t"]
             framed = sizes[sh["v"]] != (W, H)
             zf, zt = (1.0, 1.07) if k % 2 == 0 else (1.07, 1.0)   # 推拉交替
             out = tmp / f"{n:03d}.mp4"
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", str(a), "-t", str(b - a), "-i", str(src[sh["v"]]),
-                            "-filter_complex", shot_filter(framed, b - a, each, zf, zt, tuple(sh.get("crop", FRAMED_CROP))), "-map", "[out]", "-an",
+                            "-filter_complex", shot_filter(framed, b - a, each, zf, zt, tuple(sh.get("crop", FRAMED_CROP))), "-map", "[out]", "-an", "-frames:v", str(frames),
                             "-c:v", "libx264", "-preset", "fast", "-crf", "16", "-pix_fmt", "yuv420p", str(out)], check=True)
             parts.append(out)
-            plan.append({"scene": scene["scene"], "src": sh["v"], "t": sh["t"], "dur": round(each, 2),
+            plan.append({"scene": scene["scene"], "src": sh["v"], "t": sh["t"], "dur": round(each, 4),
                          "framed": framed, "tag": sh.get("tag", "")})
             n += 1
     lst = tmp / "list.txt"
