@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>视频封面</title>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@900&family=Noto+Sans+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Noto Sans SC", sans-serif; }
+  #cover { position: relative; width: 1080px; overflow: hidden; color: #fff;
+    background: radial-gradient(ellipse at 50% 35%, #1a7a50 0%, #0b3d2e 55%, #051a13 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .series { background: #e8b84a; color: #0b3d2e; font-weight: 900; font-size: 34px; letter-spacing: 4px; padding: 10px 30px; border-radius: 40px; }
+  .hook { margin-top: 44px; text-align: center; font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 60px; line-height: 1.4; letter-spacing: 3px; }
+  .hook b { color: #e8b84a; font-size: 84px; display: block; }
+  .hero { margin-top: 40px; width: 900px; border-radius: 28px; overflow: hidden; border: 6px solid rgba(255,255,255,.9); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+  .hero img { display: block; width: 100%; }
+  .name { margin-top: 30px; font-family: "Ma Shan Zheng", serif; font-size: 150px; line-height: 1.1; letter-spacing: 8px; }
+  .row { margin-top: 26px; display: flex; gap: 16px; align-items: center; }
+  .rank { background: #c0392b; font-weight: 900; font-size: 44px; padding: 8px 28px; border-radius: 16px; }
+  .rank em { font-style: normal; color: #ffd98a; font-size: 60px; margin: 0 4px; }
+  .tag { border: 3px solid rgba(255,255,255,.85); font-weight: 900; font-size: 36px; padding: 6px 20px; border-radius: 40px; }
+</style>
+</head>
+<body>
+<!--DATA-->
+<div id="cover"></div>
+<script>
+const D = window.DATA, H = window.COVER_H, r0 = D.rankings[0];
+const c = document.getElementById("cover");
+c.style.height = H + "px";
+const short = H < 1600;
+c.innerHTML = `
+  <div class="series">高考择校 · 名校速览</div>
+  <div class="hook">${D.slogan.replace(/(第一所.*)$/, "<b>$1</b>")}</div>
+  <div class="hero" style="${short ? "height:360px" : "height:520px"}"><img src="${window.ASSET_BASE + D.hero}" style="height:100%;object-fit:cover"></div>
+  <div class="name">${D.name}</div>
+  <div class="row"><span class="rank">软科${r0.year} 全国<em>${r0.value}</em></span>${D.tags.slice(0, 3).map(t => `<span class="tag">${t}</span>`).join("")}</div>`;
+</script>
+</body>
+</html>

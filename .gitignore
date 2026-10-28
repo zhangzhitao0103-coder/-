@@ -1,2 +1,3 @@
 __pycache__/
 college-posters/templates/.render*.html
+college-videos/templates/.render_*.html
