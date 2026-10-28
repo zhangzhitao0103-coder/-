@@ -137,8 +137,8 @@
 
   <section class="scene" id="s-hook">
     <canvas id="stars1" width="1080" height="1920"></canvas>
-    <div class="abs center serif l1">中国共产党创办的</div>
-    <div class="abs center serif l2">第一所理工科大学</div>
+    <div class="abs center serif l1" id="hook1"></div>
+    <div class="abs center serif l2" id="hook2"></div>
     <div class="abs center q">?</div>
     <svg class="abs caves" viewBox="0 0 900 260">
       <defs><radialGradient id="glow" cx="0.5" cy="0.7" r="0.6"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#b8661f" stop-opacity="0.2"/></radialGradient></defs>
@@ -249,6 +249,8 @@ const lc = (name, i) => S[name].chunks[i] - S[name].start;   // 场景内第 i �
 // ---------- 填充内容 ----------
 const motto = D.motto.split(/\s+/);
 $("schoolTag").textContent = D.name;
+$("hook1").textContent = S.hook.sub[0];
+$("hook2").textContent = S.hook.sub[1];
 $("heroImg").src = window.ASSET_BASE + D.hero;
 $("revealName").textContent = D.name;
 $("revealTags").innerHTML = D.tags.map((t, i) => `<span class="tag ${i > 2 ? "o" : ""}">${esc(t)}</span>`).join("");

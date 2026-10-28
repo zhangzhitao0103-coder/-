@@ -31,7 +31,7 @@ c.style.height = H + "px";
 const short = H < 1600;
 c.innerHTML = `
   <div class="series">高考择校 · 名校速览</div>
-  <div class="hook">${D.slogan.replace(/(第一所.*)$/, "<b>$1</b>")}</div>
+  <div class="hook">${D.slogan.replace(/^(.*的)(.+)$/, "$1<b>$2</b>")}</div>
   <div class="hero" style="${short ? "height:360px" : "height:520px"}"><img src="${window.ASSET_BASE + D.hero}" style="height:100%;object-fit:cover"></div>
   <div class="name">${D.name}</div>
   <div class="row"><span class="rank">软科${r0.year} 全国<em>${r0.value}</em></span>${D.tags.slice(0, 3).map(t => `<span class="tag">${t}</span>`).join("")}</div>`;
