@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>院校介绍视频·实景版</title>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  /* 实景版：页面透明，叠在实拍背景轨上。配色取学校主色（浙大求是蓝） */
+  :root { --c1: #0a2a5c; --c2: #003f88; --c3: #2f7fd1; --gold: #f2c14e; --red: #d64541; --ink: #0d1b33; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: transparent; }
+  body { font-family: "Noto Sans SC", "WenQuanYi Zen Hei", sans-serif; color: #fff; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+  .abs { position: absolute; }
+  .center { left: 0; right: 0; text-align: center; }
+  .brush { font-family: "Ma Shan Zheng", serif; }
+  .serif { font-family: "Noto Serif SC", serif; font-weight: 900; }
+  .scene { position: absolute; inset: 0; opacity: 0; }
+  .shadow { text-shadow: 0 4px 18px rgba(0,0,0,.55), 0 2px 4px rgba(0,0,0,.5); }
+
+  /* 常驻层 */
+  #topScrim { position: absolute; left: 0; right: 0; top: 0; height: 520px; background: linear-gradient(rgba(5,18,40,.72), rgba(5,18,40,0)); }
+  #band { position: absolute; left: 0; right: 0; top: 1240px; bottom: 0;
+    background: linear-gradient(rgba(8,28,64,0) 0px, rgb(8,28,64) 40px, rgb(8,28,64) 300px, rgba(8,28,64,.82) 680px); }
+  #band::before { content: ""; position: absolute; left: 60px; right: 60px; top: 46px; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: .8; }
+  #series { position: absolute; left: 60px; top: 236px; background: var(--c2); color: #fff; font-weight: 700; font-size: 30px; letter-spacing: 3px;
+    padding: 10px 26px 10px 20px; border-radius: 6px 30px 30px 6px; border-left: 8px solid var(--gold); }
+  #schoolTag { position: absolute; right: 60px; top: 242px; font-size: 30px; font-weight: 700; letter-spacing: 2px; background: rgba(255,255,255,.18);
+    padding: 8px 20px; border-radius: 30px; border: 2px solid rgba(255,255,255,.35); }
+  #progress { position: absolute; left: 60px; right: 60px; top: 212px; height: 6px; background: rgba(255,255,255,.25); border-radius: 3px; overflow: hidden; }
+  #progress i { display: block; height: 100%; width: 0; background: var(--gold); }
+  #sub { position: absolute; left: 50px; right: 50px; top: 1316px; height: 170px; display: flex; align-items: center; justify-content: center; text-align: center; }
+  #sub span { font-size: 58px; font-weight: 900; line-height: 1.3; letter-spacing: 1px; }
+  #sub em { font-style: normal; color: var(--gold); }
+  #credit { position: absolute; right: 60px; top: 1196px; font-size: 22px; color: rgba(255,255,255,.8); background: rgba(0,0,0,.28); padding: 4px 14px; border-radius: 16px; }
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+  #tag { position: absolute; left: 60px; top: 1150px; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.95); color: var(--c1);
+    font-size: 36px; font-weight: 900; padding: 8px 24px 8px 14px; border-radius: 40px; opacity: 0; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+  #tag svg { width: 34px; height: 34px; }
+
+  .panel { background: rgba(8,28,64,.62); border: 2px solid rgba(255,255,255,.18); border-radius: 30px; }
+
+  /* 1 钩子 */
+  #s-hook .scrim { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(5,18,40,.25), rgba(5,18,40,.7)); }
+  #s-hook .l1 { top: 560px; font-size: 64px; font-weight: 900; letter-spacing: 8px; }
+  #s-hook .l2 { top: 650px; font-size: 140px; color: var(--gold); letter-spacing: 6px; }
+  #s-hook .l3 { top: 850px; font-size: 64px; font-weight: 900; letter-spacing: 4px; }
+
+  /* 2 揭晓 */
+  #s-reveal .name { top: 640px; font-size: 200px; letter-spacing: 12px; }
+  #s-reveal .en { top: 880px; font-size: 30px; font-weight: 700; letter-spacing: 8px; text-transform: uppercase; }
+  #s-reveal .tags { top: 960px; display: flex; justify-content: center; gap: 14px; }
+  #s-reveal .tag { background: var(--c2); font-size: 36px; font-weight: 900; padding: 8px 24px; border-radius: 30px; border: 2px solid rgba(255,255,255,.5); opacity: 0; }
+  #s-reveal .tag.o { background: rgba(255,255,255,.95); color: var(--c2); }
+
+  /* 3 历史 */
+  #s-history .panel { left: 60px; right: 60px; top: 380px; height: 790px; padding: 30px 40px; }
+  #s-history h2 { font-size: 46px; font-weight: 900; letter-spacing: 6px; margin-bottom: 18px; }
+  #s-history h2 small { font-size: 22px; color: var(--gold); letter-spacing: 6px; margin-left: 14px; }
+  #s-history .node { display: flex; align-items: center; gap: 30px; height: 158px; opacity: 0; position: relative; }
+  #s-history .node b { font-family: "Noto Serif SC", serif; font-size: 86px; font-weight: 900; color: var(--gold); width: 240px; line-height: 1; }
+  #s-history .node span { font-size: 42px; font-weight: 700; }
+  #s-history .node:not(:last-child)::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: rgba(255,255,255,.18); }
+
+  /* 4 数据 */
+  #s-data .grid { left: 60px; right: 60px; top: 400px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  #s-data .card { height: 360px; padding: 34px 30px; opacity: 0; display: flex; flex-direction: column; justify-content: center; }
+  #s-data .v { font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 150px; color: var(--gold); line-height: 1; }
+  #s-data .v small { font-size: 48px; margin-left: 6px; }
+  #s-data .l { font-size: 38px; font-weight: 900; margin-top: 16px; }
+  #s-data .y { font-size: 26px; opacity: .75; margin-top: 4px; }
+
+  /* 5 专业 */
+  #s-majors .panel { left: 60px; right: 60px; top: 720px; height: 450px; padding: 28px 30px; }
+  #s-majors h2 { font-size: 40px; font-weight: 900; letter-spacing: 6px; margin-bottom: 18px; }
+  #s-majors .chips { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  #s-majors .chip { background: rgba(255,255,255,.95); color: var(--c1); border-radius: 18px; height: 120px; display: flex; align-items: center; justify-content: center;
+    font-size: 36px; font-weight: 900; opacity: 0; }
+  #s-majors .stamp { top: 430px; font-size: 96px; color: var(--gold); opacity: 0; letter-spacing: 4px; }
+
+  /* 7 人物 */
+  #s-people .cards { left: 60px; right: 60px; top: 400px; display: flex; flex-direction: column; gap: 22px; }
+  #s-people .card { display: flex; align-items: center; gap: 30px; padding: 26px 34px; opacity: 0; }
+  #s-people .ava { width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, var(--c3), var(--c2)); border: 4px solid rgba(255,255,255,.8);
+    font-family: "Noto Serif SC", serif; font-size: 70px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  #s-people .card b { display: block; font-size: 64px; font-weight: 900; }
+  #s-people .card span { display: inline-block; margin-top: 8px; font-size: 34px; font-weight: 900; background: var(--gold); color: var(--c1); padding: 2px 16px; border-radius: 10px; }
+  #s-people .rate { left: 60px; right: 60px; top: 870px; height: 300px; display: flex; align-items: center; gap: 40px; padding: 0 40px; opacity: 0; }
+  #s-people .rate svg { width: 230px; height: 230px; flex-shrink: 0; }
+  #s-people .rate b { font-family: "Noto Serif SC", serif; font-size: 110px; font-weight: 900; color: var(--gold); line-height: 1; }
+  #s-people .rate span { display: block; font-size: 34px; font-weight: 700; margin-top: 10px; }
+
+  /* 8 适合谁 */
+  #s-fit .panel { left: 60px; right: 60px; top: 420px; height: 750px; padding: 40px 50px; }
+  #s-fit h2 { font-size: 46px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; }
+  #s-fit .item { display: flex; align-items: center; gap: 26px; height: 130px; opacity: 0; }
+  #s-fit .item i { width: 80px; height: 80px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; }
+  #s-fit .item i svg { width: 48px; height: 48px; }
+  #s-fit .item b { font-size: 56px; font-weight: 900; }
+  #s-fit .req { margin-top: 30px; display: flex; align-items: center; gap: 18px; opacity: 0; }
+  #s-fit .req .k { font-size: 40px; font-weight: 900; }
+  #s-fit .req .p { font-size: 60px; font-weight: 900; padding: 8px 30px; border-radius: 20px; background: #fff; color: var(--c2); }
+
+  /* 9 结尾 */
+  #s-ending .motto { top: 560px; font-size: 230px; color: #fff; letter-spacing: 20px; }
+  #s-ending .motto small { display: block; font-family: "Noto Sans SC"; font-size: 34px; letter-spacing: 12px; color: var(--gold); font-weight: 900; margin-top: 10px; }
+  #s-ending .end { inset: 0; background: radial-gradient(ellipse at 50% 30%, #1a4f9c 0%, var(--c1) 60%, #050f22 100%); opacity: 0; }
+  #s-ending .goal { top: 470px; font-size: 170px; color: var(--gold); }
+  #s-ending .goal2 { top: 700px; font-size: 62px; font-weight: 900; letter-spacing: 4px; }
+  #s-ending .qr { left: 330px; top: 850px; width: 420px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  #s-ending .qr .code { width: 250px; height: 250px; background: #fff; padding: 16px; border-radius: 20px; }
+  #s-ending .qr .code svg { width: 100%; height: 100%; display: block; }
+  #s-ending .qr span { font-size: 34px; font-weight: 700; }
+  #s-ending .qr small { font-size: 30px; opacity: .8; }
+  #s-ending .disc { top: 1500px; font-size: 24px; opacity: .55; line-height: 1.6; }
+</style>
+</head>
+<body>
+<!--DATA-->
+<div id="stage">
+  <div id="topScrim"></div>
+  <section class="scene" id="s-hook"><div class="scrim"></div>
+    <div class="abs center l1 shadow">被誉为</div>
+    <div class="abs center serif l2 shadow">“东方剑桥”</div>
+    <div class="abs center l3 shadow">的大学是哪所？</div>
+  </section>
+  <section class="scene" id="s-reveal">
+    <div class="abs center brush name shadow" id="rName"></div>
+    <div class="abs center en shadow" id="rEn"></div>
+    <div class="abs center tags" id="rTags"></div>
+  </section>
+  <section class="scene" id="s-history"><div class="abs panel"><h2>历史沿革<small>HISTORY</small></h2><div id="hNodes"></div></div></section>
+  <section class="scene" id="s-data"><div class="abs grid" id="dGrid"></div></section>
+  <section class="scene" id="s-majors">
+    <div class="abs center brush stamp shadow" id="mStamp"></div>
+    <div class="abs panel"><h2>王牌专业</h2><div class="chips" id="mChips"></div></div>
+  </section>
+  <section class="scene" id="s-campus"></section>
+  <section class="scene" id="s-people">
+    <div class="abs cards" id="pCards"></div>
+    <div class="abs panel rate" id="pRate">
+      <svg viewBox="0 0 230 230"><circle cx="115" cy="115" r="96" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="26"/>
+        <circle id="pArc" cx="115" cy="115" r="96" fill="none" stroke="#f2c14e" stroke-width="26" stroke-linecap="round" transform="rotate(-90 115 115)" stroke-dasharray="603" stroke-dashoffset="603"/></svg>
+      <div><b id="pVal">0%</b><span id="pLab"></span></div>
+    </div>
+  </section>
+  <section class="scene" id="s-fit"><div class="abs panel"><h2>适合什么样的你</h2><div id="fItems"></div>
+    <div class="req" id="fReq"><span class="k">选科要求</span><span class="p">物理</span><span class="k">+</span><span class="p">化学</span></div></div></section>
+  <section class="scene" id="s-ending">
+    <div class="abs center brush motto shadow" id="eMotto"></div>
+    <div class="abs end" id="eEnd">
+      <div class="abs center brush goal" id="eGoal"></div>
+      <div class="abs center goal2">从今天的每一道题开始！</div>
+      <div class="abs qr"><div class="code" id="eQR"></div><span>扫码访问官网</span><small id="eWeb"></small></div>
+      <div class="abs center disc" id="eDisc"></div>
+    </div>
+  </section>
+
+  <div id="band"></div>
+  <div id="progress"><i></i></div>
+  <div id="series">高考择校 · 名校速览</div>
+  <div id="schoolTag"></div>
+  <div id="tag"><svg viewBox="0 0 24 24" fill="#d64541"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span></span></div>
+  <div id="credit">实景拍摄</div>
+  <div id="sub"><span></span></div>
+  <div id="flash"></div>
+</div>
+
+<script>
+const D = window.DATA, TL = window.TIMELINE, SHOTS = window.SHOTS || [];
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const eOut = x => 1 - Math.pow(1 - clamp(x), 3);
+const eBack = x => { x = clamp(x); const c = 1.70158; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const p = (lt, a, d = 0.4) => clamp((lt - a) / d);
+const style = (el, o, tr) => { el.style.opacity = o; if (tr !== undefined) el.style.transform = tr; };
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const counter = (lt, a, d, from, to, dec = 0) => (from + (to - from) * eOut(p(lt, a, d))).toFixed(dec);
+
+const subLen = s => s.replace(/[\s，。、！？：“”+]/g, "").length;
+TL.scenes.forEach(s => {
+  const lens = s.sub.map(subLen), tot = lens.reduce((a, b) => a + b, 0), span = s.voice_end - s.start;
+  let acc = 0;
+  s.chunks = lens.map(l => { const c = s.start + span * acc / tot; acc += l; return c; });
+});
+const S = Object.fromEntries(TL.scenes.map(s => [s.scene, s]));
+const lc = (name, i) => S[name].chunks[i] - S[name].start;
+
+// ---------- 内容 ----------
+const R = Object.fromEntries(D.rankings.map(r => [r.label, r]));
+$("schoolTag").textContent = D.name;
+$("rName").textContent = D.name;
+$("rEn").textContent = D.name_en;
+$("rTags").innerHTML = D.tags.map((t, i) => `<span class="tag ${i > 2 ? "o" : ""}">${esc(t)}</span>`).join("");
+$("hNodes").innerHTML = D.history.map(([y, t], i) => `<div class="node" id="hn${i}"><b id="hy${i}">${y}</b><span>${esc(t)}</span></div>`).join("");
+
+const aplus = (D.eval_note.match(/(\d+)个学科/) || [])[1];
+const cards = [
+  [R["软科中国大学排名"], "软科中国大学排名"],
+  [R["QS世界大学排名"], "QS世界大学排名"],
+  [R["国家双一流建设学科"], "国家双一流建设学科"],
+  [{ value: aplus, unit: "个", year: "第四轮学科评估" }, "A+ 学科"],
+].filter(c => c[0] && c[0].value);
+$("dGrid").innerHTML = cards.map(([r, lab], i) =>
+  `<div class="card panel" id="dc${i}"><div class="v"><span id="dv${i}">0</span><small>${esc(r.unit)}</small></div>
+   <div class="l">${esc(lab)}</div><div class="y">${esc(r.year)}</div></div>`).join("");
+
+const majors = ["计算机", "软件工程", "自动化", "电气工程", "光电信息", "临床医学"];
+$("mChips").innerHTML = majors.map((m, i) => `<div class="chip" id="mc${i}">${esc(m)}</div>`).join("");
+$("mStamp").textContent = "工程技术 · 数字经济";
+
+const alumni = D.alumni.slice(0, 2);
+$("pCards").innerHTML = alumni.map(([n, t], i) =>
+  `<div class="card panel" id="pc${i}"><div class="ava">${esc(n[0])}</div><div><b>${esc(n)}</b><span>${esc(t)}</span></div></div>`).join("");
+$("pLab").textContent = `${D.career.rate_label}（${D.career.rate_year}）`;
+const rate = parseFloat(D.career.rate_value);
+
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#0a2a5c" stroke-width="3.4" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const fits = ["综合素质强", "爱思考、爱钻研", "向往科技创新"];
+$("fItems").innerHTML = fits.map((f, i) => `<div class="item" id="fi${i}"><i>${CHECK}</i><b>${esc(f)}</b></div>`).join("");
+
+$("eMotto").innerHTML = `${esc(D.motto.replace(/\s+/g, ""))}<small>${esc(D.name)}校训</small>`;
+$("eGoal").textContent = `目标${D.short}`;
+$("eQR").innerHTML = window.QR;
+$("eWeb").textContent = D.website_label;
+$("eDisc").innerHTML = "信息来源：公开资料（截至2026年10月），仅供参考 · 非学校官方发布<br>部分画面：有道领世探校实拍";
+
+// ---------- 逐帧 ----------
+const TRANS = 0.25;
+function sceneAlpha(s, t) {
+  const i = TL.scenes.indexOf(s), next = TL.scenes[i + 1];
+  const a = i === 0 ? 1 : clamp((t - s.start) / TRANS);
+  const b = next ? 1 - clamp((t - next.start) / TRANS) : 1;
+  return Math.min(a, b);
+}
+
+const RENDER = {
+  hook(lt, el) {
+    style(el.querySelector(".l1"), eOut(p(lt, 0.1, 0.4)), `translateY(${(1 - eOut(p(lt, 0.1, 0.4))) * 30}px)`);
+    const k = p(lt, 0.45, 0.4);
+    style(el.querySelector(".l2"), k, `scale(${1.6 - 0.6 * eBack(k)})`);
+    const q = p(lt, lc("hook", 2) - 0.1, 0.35);
+    style(el.querySelector(".l3"), q, `translateY(${(1 - eOut(q)) * 40}px)`);
+  },
+  reveal(lt) {
+    const n = p(lt, 0.05, 0.45);
+    style($("rName"), n, `scale(${1.7 - 0.7 * eBack(n)})`);
+    style($("rEn"), eOut(p(lt, 0.4, 0.4)));
+    [...$("rTags").children].forEach((c, i) => {
+      const k = p(lt, lc("reveal", 1) - 0.1 + i * 0.2, 0.3);
+      style(c, k, `translateY(${(1 - eBack(k)) * 50}px) scale(${0.6 + 0.4 * eBack(k)})`);
+    });
+  },
+  history(lt, el) {
+    style(el.querySelector(".panel"), eOut(p(lt, 0, 0.35)), `translateY(${(1 - eOut(p(lt, 0, 0.35))) * 60}px)`);
+    D.history.forEach(([y], i) => {
+      const a = lc("history", i) - 0.05, k = p(lt, a, 0.35);
+      style($("hn" + i), k, `translateX(${(1 - eOut(k)) * 100}px)`);
+      if (/^\d+$/.test(y)) $("hy" + i).textContent = counter(lt, a, 0.6, +y - 40, +y);
+    });
+  },
+  data(lt) {
+    cards.forEach(([r], i) => {
+      const a = lc("data", Math.min(i, S.data.chunks.length - 1)) - 0.1, k = p(lt, a, 0.35);
+      style($("dc" + i), k, `scale(${0.8 + 0.2 * eBack(k)})`);
+      const to = parseFloat(r.value);
+      $("dv" + i).textContent = isNaN(to) ? r.value : counter(lt, a, 0.9, i === 0 ? 50 : 0, to);
+    });
+  },
+  majors(lt, el) {
+    style(el.querySelector(".panel"), eOut(p(lt, 0, 0.35)), `translateY(${(1 - eOut(p(lt, 0, 0.35))) * 80}px)`);
+    const a = lc("majors", 0), b = lc("majors", 2);
+    majors.forEach((_, i) => {
+      const k = p(lt, a + (b - a - 0.2) * i / majors.length, 0.28);
+      style($("mc" + i), k, `scale(${0.7 + 0.3 * eBack(k)})`);
+    });
+    const s = p(lt, b - 0.05, 0.35);
+    style($("mStamp"), s, `scale(${1.6 - 0.6 * eBack(s)})`);
+  },
+  campus() {},
+  people(lt) {
+    alumni.forEach((_, i) => {
+      const k = p(lt, 0.05 + i * 0.35, 0.35);
+      style($("pc" + i), k, `translateX(${(1 - eOut(k)) * (i ? 120 : -120)}px)`);
+    });
+    const a = lc("people", 2) - 0.15, k = p(lt, a, 0.35);
+    style($("pRate"), k, `translateY(${(1 - eOut(k)) * 60}px)`);
+    const v = rate * eOut(p(lt, a, 1.1));
+    $("pVal").textContent = v.toFixed(2) + "%";
+    $("pArc").setAttribute("stroke-dashoffset", 603 * (1 - v / 100));
+  },
+  fit(lt, el) {
+    style(el.querySelector(".panel"), eOut(p(lt, 0, 0.35)));
+    const at = [lc("fit", 0), lc("fit", 0) + 0.6, lc("fit", 1)];
+    fits.forEach((_, i) => { const k = p(lt, at[i] - 0.05, 0.3); style($("fi" + i), k, `translateX(${(1 - eOut(k)) * -80}px)`); });
+    const q = p(lt, lc("fit", 2) - 0.05, 0.35);
+    style($("fReq"), q, `scale(${1.3 - 0.3 * eBack(q)})`);
+  },
+  ending(lt) {
+    const m = p(lt, 0.05, 0.5);
+    style($("eMotto"), m, `scale(${1.4 - 0.4 * eOut(m)})`);
+    const e = p(lt, lc("ending", END_I) - 0.15, 0.4);
+    style($("eEnd"), e);
+    style($("eGoal"), e, `scale(${1.5 - 0.5 * eBack(e)})`);
+  },
+};
+
+const NO_SUB = new Set();
+const END_I = Math.max(1, S.ending.sub.findIndex(x => x.startsWith("目标")));   // 片尾卡从「目标…」这句开始
+window.seek = t => {
+  $("progress").firstChild.style.width = `${clamp(t / TL.duration) * 100}%`;
+  for (const s of TL.scenes) {
+    const el = $("s-" + s.scene), a = sceneAlpha(s, t);
+    el.style.opacity = a;
+    el.style.display = a > 0 ? "block" : "none";
+    if (a > 0) RENDER[s.scene](t - s.start, el);
+  }
+  const cur = TL.scenes.filter(s => t >= s.start).pop() || TL.scenes[0];
+  style($("schoolTag"), t > S.reveal.start + 0.5 ? 1 : 0);
+  // 地点标签：校园段每个镜头一张
+  const sh = SHOTS.filter(x => x.tag && t >= x.start && t < x.start + x.dur).pop();
+  const tagEl = $("tag");
+  if (sh) {
+    tagEl.querySelector("span").textContent = sh.tag;
+    const k = p(t, sh.start + 0.05, 0.25), out = 1 - p(t, sh.start + sh.dur - 0.2, 0.2);
+    style(tagEl, Math.min(k, out), `translateX(${(1 - eOut(k)) * -60}px)`);
+  } else tagEl.style.opacity = 0;
+  // 片尾卡出现后隐藏常驻元素
+  const endCard = cur.scene === "ending" && t - cur.start > lc("ending", END_I) - 0.15;
+  const endA = cur.scene === "ending" ? 1 - p(t - cur.start, lc("ending", END_I) - 0.15, 0.4) : 1;
+  ["band", "credit"].forEach(id => $(id).style.opacity = endA);
+  $("credit").style.opacity = endA * (["hook", "reveal", "campus"].includes(cur.scene) ? 1 : 0);
+  // 字幕
+  const sub = $("sub").firstChild;
+  let txt = "";
+  if (!NO_SUB.has(cur.scene) && !endCard && t < cur.voice_end + 0.25) {
+    const i = cur.chunks.filter(c => t >= c - 0.05).length - 1;
+    txt = cur.sub[Math.max(i, 0)];
+  }
+  sub.style.visibility = txt ? "visible" : "hidden";
+  sub.innerHTML = esc(txt).replace(/([0-9]+(?:\.[0-9]+)?%?|A\+|C9)/g, "<em>$1</em>");
+  $("flash").style.opacity = t >= S.reveal.start ? Math.max(0, 0.85 - (t - S.reveal.start) / 0.2) : 0;
+};
+window.seek(0);
+</script>
+</body>
+</html>

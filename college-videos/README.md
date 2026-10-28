@@ -10,7 +10,22 @@
 - `scripts/audio.py`：现场合成背景音乐与音效（无版权问题），人声出现时自动压低音乐
 - `scripts/render_video.py`：按时间轴逐帧渲染画面；`--preview` 导出预览帧，`--cover` 导出封面
 - `output/`：成片与封面
-- `视频号发布文案.md`：标题、简介、话题、评论区互动
+- `视频号发布文案*.md`：标题、简介、话题、评论区互动
+
+## 实景版（有实拍素材的学校）
+在动效版基础上，底层换成实拍镜头，动效层透明叠加。示例：`data/zju_script.json`（浙江大学）。
+- 口播稿每段加 `shots`：`{"v": 素材代号, "t": [起, 止]}`，可选 `"chunk"`（跟随第几句字幕切换）、`"tag"`（地点标签）、`"crop"`（带边框素材的裁切区域）
+- `sources` 写素材文件名，`--src` 指向素材目录；`theme` 设主题色；`cover_hook` / `cover_img` 定制封面
+- 原片自带字幕由模板底部的实色字幕带遮住；带绿框的探校素材自动裁成卡片
+```bash
+python3 scripts/tts.py data/zju_script.json --model $M --out $B
+python3 scripts/build_bg.py data/zju_script.json --build $B --src <素材目录>
+python3 scripts/audio.py --build $B
+python3 scripts/render_live.py data/zju_script.json --build $B --out $B/silent.mp4
+ffmpeg -i $B/silent.mp4 -i $B/mix.wav -map 0:v -map 1:a -c:v copy -af loudnorm=I=-14:TP=-1.5:LRA=11 \
+  -ar 48000 -c:a aac -b:a 192k -movflags +faststart -shortest output/浙江大学_院校介绍_实景版.mp4
+python3 scripts/render_video.py data/zju_script.json --build $B --cover --out output
+```
 
 ## 出片
 ```bash

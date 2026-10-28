@@ -117,7 +117,8 @@ def build(tl, total):
     bgm = np.zeros(int(total * SR) + SR)
     sfx = np.zeros_like(bgm)
     t0 = S["reveal"]["start"]                       # 鼓点从揭晓开始，对齐小节
-    story = (S["story"]["start"], S["people"]["start"])
+    nxt = {a["scene"]: b["start"] for a, b in zip(tl["scenes"], tl["scenes"][1:])}
+    story = (S["story"]["start"], nxt["story"]) if "story" in S else (-1, -1)   # 抒情段收成半拍
     end_t = S["ending"]["start"]
     bar = 4 * BEAT
     # 铺底：从 0 开始，按小节换和弦（以 t0 为相位基准）
@@ -182,7 +183,7 @@ def main():
         s["chunks"] = chunks(s)
     S = {s["scene"]: s for s in tl["scenes"]}
     # 数据卡 A+ 盖章、王牌专业落章：加重音
-    extra = [S["data"]["chunks"][2] + 0.5, S["majors"]["chunks"][2]]
+    extra = [S[k]["chunks"][-1] + (0.5 if k == "data" else 0) for k in ("data", "majors") if k in S]
 
     v, vsr = sf.read(b / "voice.wav", dtype="float32")
     voice = resample_poly(v, SR, vsr) if vsr != SR else v

@@ -67,8 +67,13 @@ def main():
         out.mkdir(parents=True, exist_ok=True)
         with sync_playwright() as p:
             for tag, h in [("9x16", 1920), ("3x4", 1440)]:
-                browser, page, _, tmp, school = open_page(p, Path(args.script), Path(args.build), COVER,
-                                                          f"window.COVER_H={h};")
+                sc = json.loads(Path(args.script).read_text(encoding="utf-8"))
+                extra = f"window.COVER_H={h};window.THEME={json.dumps(sc.get('theme', ''))};"
+                if sc.get("cover_hook"):   # 口播稿可单独指定封面标题（HTML，<b> 内为高亮）
+                    extra += f"window.COVER_HOOK={json.dumps(sc['cover_hook'], ensure_ascii=False)};"
+                if sc.get("cover_img"):    # 封面实拍图，路径相对 college-videos/
+                    extra += f"window.COVER_IMG={json.dumps('../' + sc['cover_img'])};"
+                browser, page, _, tmp, school = open_page(p, Path(args.script), Path(args.build), COVER, extra)
                 dst = out / f"{school['name']}_封面_{tag}.jpg"
                 page.locator("#cover").screenshot(path=str(dst), type="jpeg", quality=92)
                 browser.close()

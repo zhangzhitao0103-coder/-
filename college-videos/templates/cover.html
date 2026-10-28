@@ -28,11 +28,15 @@
 const D = window.DATA, H = window.COVER_H, r0 = D.rankings[0];
 const c = document.getElementById("cover");
 c.style.height = H + "px";
+// 学校主题色：口播稿里的 theme 字段
+const THEMES = { zju: ["#2a63b8", "#0a2a5c", "#050f22"] };
+const th = THEMES[window.THEME];
+if (th) c.style.background = `radial-gradient(ellipse at 50% 35%, ${th[0]} 0%, ${th[1]} 55%, ${th[2]} 100%)`;
 const short = H < 1600;
 c.innerHTML = `
   <div class="series">高考择校 · 名校速览</div>
-  <div class="hook">${D.slogan.replace(/^(.*的)(.+)$/, "$1<b>$2</b>")}</div>
-  <div class="hero" style="${short ? "height:360px" : "height:520px"}"><img src="${window.ASSET_BASE + D.hero}" style="height:100%;object-fit:cover"></div>
+  <div class="hook">${window.COVER_HOOK || D.slogan.replace(/^(.*的)(.+)$/, "$1<b>$2</b>")}</div>
+  <div class="hero" style="${short ? "height:360px" : "height:520px"}"><img src="${window.COVER_IMG || window.ASSET_BASE + D.hero}" style="height:100%;width:100%;object-fit:cover;object-position:50% 58%"></div>
   <div class="name">${D.name}</div>
   <div class="row"><span class="rank">软科${r0.year} 全国<em>${r0.value}</em></span>${D.tags.slice(0, 3).map(t => `<span class="tag">${t}</span>`).join("")}</div>`;
 </script>
