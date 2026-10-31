@@ -30,7 +30,8 @@ const c = document.getElementById("cover");
 c.style.height = H + "px";
 // 学校主题色：口播稿里的 theme 字段
 const THEMES = { zju: ["#2a63b8", "#0a2a5c", "#050f22"] };
-const th = THEMES[window.THEME];
+const T = window.THEME;
+const th = T && typeof T === "object" ? [T.c3, T.c1, "#06080f"] : THEMES[T];
 if (th) c.style.background = `radial-gradient(ellipse at 50% 35%, ${th[0]} 0%, ${th[1]} 55%, ${th[2]} 100%)`;
 const short = H < 1600;
 c.innerHTML = `

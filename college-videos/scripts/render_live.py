@@ -29,7 +29,9 @@ def main():
     shots = (build / "shots.json").read_text(encoding="utf-8")
 
     with sync_playwright() as p:
-        browser, page, timeline, tmp, _ = open_page(p, Path(args.script), build, TEMPLATE, f"window.SHOTS={shots};")
+        script = Path(args.script).read_text(encoding="utf-8")
+        browser, page, timeline, tmp, _ = open_page(p, Path(args.script), build, TEMPLATE,
+                                                    f"window.SHOTS={shots};window.SCRIPT={script};")
         try:
             if args.preview:
                 out.mkdir(parents=True, exist_ok=True)

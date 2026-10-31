@@ -2,9 +2,10 @@
 
 镜头写在口播稿每段的 shots 里：{"v": 素材代号, "t": [起, 止]}，同一段内的镜头平分该段时长；
 镜头加 "chunk": 字幕句序号 时，画面跟着字幕逐句切换。
-- 全屏素材（1080×1920）：铺满画面，带缓慢推镜；原片压的字幕由模板底部字幕带盖住。
-- 带边框素材（探校系列 720×1280 绿框）：裁出画面内区，做成卡片放在同一画面的虚化放大背景上；
-  单个镜头可用 "crop": [宽, 高, x, y] 改裁切区域。
+- 竖屏素材：铺满画面，带缓慢推镜；原片压的字幕由模板底部字幕带盖住。
+- 横屏素材：展示段做成居中的横屏卡片（背景为同画面虚化）；信息段只做虚化背景，不放大损失清晰度。
+- 带边框素材（口播稿 framed_sources 里列出的探校系列绿框视频）：裁出画面内区做成卡片；
+  单个镜头可用 "crop": [宽, 高, x, y] 改裁切区域，用 "mode" 强制 fill / wide / blur / framed。
 源镜头不够长时最多放慢到 0.5 倍，再不够就定格最后一帧补齐。
 
 用法：python3 scripts/build_bg.py data/zju_script.json --build <配音输出目录> --src <素材目录>
@@ -27,22 +28,45 @@ def probe(path):
     return w, h
 
 
-def shot_filter(framed, src_len, need, zoom_from, zoom_to, crop=FRAMED_CROP):
+INFO_SCENES = {"history", "data", "majors", "people", "fit"}   # 这些段落上面压信息面板，横屏素材只做虚化背景
+WIDE_Y = 466                                                     # 横屏卡片的纵向位置（居中于可见区 300–1240）
+
+
+def shot_filter(mode, src_len, need, zoom_from, zoom_to, crop=FRAMED_CROP, src_w=W, src_h=H):
+    """mode: fill 竖屏铺满 / wide 横屏卡片 / blur 虚化铺满 / framed 绿框素材裁成卡片。"""
     speed = min(1.0, max(0.5, src_len / need))       # <1 表示放慢
     pts = f"setpts=PTS/{speed:.4f}"
     z = f"({zoom_from}+({zoom_to}-{zoom_from})*t/{need:.3f})"
-    if not framed:
-        return (f"[0:v]{pts},fps={FPS},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
-                f"scale=w='{W}*{z}':h='{H}*{z}':eval=frame,crop={W}:{H},"
-                f"tpad=stop_mode=clone:stop_duration={need:.3f},trim=end_frame={round(need * FPS)},setsar=1[out]")
+    tail = f"tpad=stop_mode=clone:stop_duration={need:.3f},trim=end_frame={round(need * FPS)},setsar=1[out]"
+    cover = f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H}"
+    if mode == "fill":
+        return f"[0:v]{pts},fps={FPS},{cover},scale=w='{W}*{z}':h='{H}*{z}':eval=frame,crop={W}:{H},{tail}"
+    if mode == "blur":
+        return f"[0:v]{pts},fps={FPS},{cover},boxblur=24:2,eq=brightness=-0.10:saturation=1.1,{tail}"
+    if mode == "wide":
+        card_h = int(W * src_h / src_w) // 2 * 2
+        return (f"[0:v]{pts},fps={FPS},split[a][b];"
+                f"[a]{cover},boxblur=36:2,eq=brightness=-0.16[bg];"
+                f"[b]scale=w='{W}*{z}':h='{card_h}*{z}':eval=frame,crop={W}:{card_h}[card];"
+                f"[bg][card]overlay=0:{WIDE_Y},{tail}")
     cw, ch, cx, cy = crop
     card_w = 900
     card_h = int(card_w * ch / cw) // 2 * 2
     return (f"[0:v]{pts},fps={FPS},crop={cw}:{ch}:{cx}:{cy},split[a][b];"
-            f"[a]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},boxblur=30:2,eq=brightness=-0.12[bg];"
+            f"[a]{cover},boxblur=30:2,eq=brightness=-0.12[bg];"
             f"[b]scale=w='{card_w}*{z}':h='{card_h}*{z}':eval=frame,crop={card_w}:{card_h}[card];"
-            f"[bg][card]overlay=({W}-{card_w})/2:250,"
-            f"tpad=stop_mode=clone:stop_duration={need:.3f},trim=end_frame={round(need * FPS)},setsar=1[out]")
+            f"[bg][card]overlay=({W}-{card_w})/2:250,{tail}")
+
+
+def pick_mode(sh, scene, size, framed_sources):
+    if sh.get("mode"):
+        return sh["mode"]
+    if sh["v"] in framed_sources or "crop" in sh:
+        return "framed"
+    w, h = size
+    if h > w:
+        return "fill"
+    return "blur" if scene in INFO_SCENES else "wide"
 
 
 def chunk_starts(scene):
@@ -97,15 +121,15 @@ def main():
             frame += frames
             each = frames / FPS
             a, b = sh["t"]
-            framed = sizes[sh["v"]] != (W, H)
+            mode = pick_mode(sh, scene["scene"], sizes[sh["v"]], set(script.get("framed_sources", [])))
             zf, zt = (1.0, 1.07) if k % 2 == 0 else (1.07, 1.0)   # 推拉交替
             out = tmp / f"{n:03d}.mp4"
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", str(a), "-t", str(b - a), "-i", str(src[sh["v"]]),
-                            "-filter_complex", shot_filter(framed, b - a, each, zf, zt, tuple(sh.get("crop", FRAMED_CROP))), "-map", "[out]", "-an", "-frames:v", str(frames),
+                            "-filter_complex", shot_filter(mode, b - a, each, zf, zt, tuple(sh.get("crop", FRAMED_CROP)), *sizes[sh["v"]]), "-map", "[out]", "-an", "-frames:v", str(frames),
                             "-c:v", "libx264", "-preset", "fast", "-crf", "16", "-pix_fmt", "yuv420p", str(out)], check=True)
             parts.append(out)
             plan.append({"scene": scene["scene"], "src": sh["v"], "t": sh["t"], "dur": round(each, 4),
-                         "framed": framed, "tag": sh.get("tag", "")})
+                         "mode": mode, "tag": sh.get("tag", "")})
             n += 1
     lst = tmp / "list.txt"
     lst.write_text("".join(f"file '{p.name}'\n" for p in parts), encoding="utf-8")

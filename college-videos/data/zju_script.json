@@ -9,6 +9,10 @@
   "v2": "20251117-探校-浙江大学-玩好篇.mp4",
   "v3": "20260227-有道领世-浙江大学.mp4"
  },
+ "framed_sources": [
+  "v1",
+  "v2"
+ ],
  "cover_hook": "被誉为<b>“东方剑桥”</b>",
  "cover_img": "assets/zju_cover.jpg",
  "segments": [
