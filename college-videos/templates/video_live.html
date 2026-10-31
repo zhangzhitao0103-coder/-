@@ -193,6 +193,8 @@ const R = Object.fromEntries(D.rankings.map(r => [r.label, r]));
 $("schoolTag").textContent = D.name;
 const hook = SC.hook || ["", D.slogan, "你知道是哪所吗？"];
 ["hk1", "hk2", "hk3"].forEach((id, i) => $(id).textContent = hook[i] || "");
+// 钩子大字按字数缩放，保证一行放下
+$("hk2").style.fontSize = Math.min(140, Math.floor(960 / Math.max(1, [...(hook[1] || "")].length))) + "px";
 $("credit").textContent = SC.credit_tag || "实景拍摄";
 $("rName").textContent = D.name;
 $("rEn").textContent = D.name_en;

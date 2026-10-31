@@ -7,6 +7,7 @@
 """
 import argparse
 import io
+import os
 import json
 import subprocess
 from pathlib import Path
@@ -43,7 +44,7 @@ def open_page(p, script_path: Path, build: Path, template: Path = TEMPLATE, extr
               f"window.TIMELINE = {json.dumps(timeline, ensure_ascii=False)};"
               f"window.QR = {json.dumps(qr_svg(school['website']))};"
               f"window.ASSET_BASE = {json.dumps('../' + asset_base.as_posix() + '/')};{extra}</script>")
-    tmp = template.parent / f".render_{template.stem}.html"
+    tmp = template.parent / f".render_{template.stem}_{os.getpid()}.html"   # 带进程号，并行出片互不覆盖
     tmp.write_text(template.read_text(encoding="utf-8").replace("<!--DATA-->", inject), encoding="utf-8")
     browser = p.chromium.launch(executable_path=CHROMIUM)
     page = browser.new_page(viewport={"width": 1080, "height": 1920})
