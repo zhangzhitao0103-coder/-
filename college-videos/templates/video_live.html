@@ -197,6 +197,8 @@ const hook = SC.hook || ["", D.slogan, "你知道是哪所吗？"];
 $("hk2").style.fontSize = Math.min(140, Math.floor(960 / Math.max(1, [...(hook[1] || "")].length))) + "px";
 $("credit").textContent = SC.credit_tag || "实景拍摄";
 $("rName").textContent = D.name;
+$("rName").style.fontSize = Math.min(200, Math.floor(1000 / [...D.name].length)) + "px";   // 长校名缩字号，一行放下
+$("rName").style.whiteSpace = "nowrap";
 $("rEn").textContent = D.name_en;
 $("rTags").innerHTML = D.tags.map((t, i) => `<span class="tag ${i > 2 ? "o" : ""}">${esc(t)}</span>`).join("");
 $("hNodes").innerHTML = D.history.map(([y, t], i) => `<div class="node" id="hn${i}"><b id="hy${i}">${y}</b><span>${esc(t)}</span></div>`).join("");
