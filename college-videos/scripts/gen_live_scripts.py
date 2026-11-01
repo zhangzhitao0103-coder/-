@@ -86,8 +86,11 @@ def build(sid, c, videos_root):
     if "rate_sub" not in c:   # 没有可核实的比例数据：改说主要去向
         dirs = "、".join(d["career"]["directions"][:2])
         c = {**c, "rate_sub": f"主要去向：{dirs}", "rate_say": f"毕业生主要去向，{dirs}"}
-    segs.append({"scene": "people", "sub": ["、".join(al), c.get("alumni_verb", "都曾在这里求学"), c["rate_sub"]],
-                 "say": f"{'、'.join(al)}，{c.get('alumni_verb', '都曾在这里求学')}，{c['rate_say']}。"})
+    if c.get("people_sub"):   # 没有可核实校友时，前两句由配置给出
+        segs.append({"scene": "people", "sub": c["people_sub"] + [c["rate_sub"]], "say": f"{c['people_say']}，{c['rate_say']}。"})
+    else:
+        segs.append({"scene": "people", "sub": ["、".join(al), c.get("alumni_verb", "都曾在这里求学"), c["rate_sub"]],
+                     "say": f"{'、'.join(al)}，{c.get('alumni_verb', '都曾在这里求学')}，{c['rate_say']}。"})
     req = d["subject_req"][0][1]
     segs.append({"scene": "fit", "sub": [f"{c['fit'][0]}、{c['fit'][1]}", f"{c['fit'][2]}？", f"选科要选：{req}"],
                  "say": f"{c['fit'][0]}、{c['fit'][1]}、{c['fit'][2]}？选科要选，{req.replace(' + ', '加')}。"})
