@@ -1,3 +1,5 @@
 __pycache__/
 college-posters/templates/.render*.html
 college-videos/templates/.render_*.html
+college-videos/assets/*_cover.jpg
+!college-videos/assets/zju_cover.jpg
