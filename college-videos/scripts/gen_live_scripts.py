@@ -45,23 +45,24 @@ def build(sid, c, videos_root):
     short = c.get("short", d["short"])
     tags = d["tags"]
     extra_tag = next((t for t in tags if t.startswith("C9")), None)
-    extra = "C9联盟成员" if extra_tag else c.get("reveal_extra", tags[4] if len(tags) > 4 else tags[3])
+    extra = "C9联盟成员" if extra_tag else c.get("reveal_extra", tags[-1])
     segs = []
     hook = c["hook"]
     segs.append({"scene": "hook", "sub": c.get("hook_sub", [hook[0] + hook[1], hook[2] if len(hook) > 2 else "", "你知道是哪所吗？"]),
                  "say": c["hook_say"]})
     if extra == "国防七子":
         extra += "之一"
-    segs.append({"scene": "reveal", "sub": [f"{d['name']}！", "985、211、双一流", extra],
-                 "say": f"{d['name']}！九八五、二一一、双一流，{say_tags(extra)}。"})
-    hist = d["history"]
+    level = "、".join(t for t in tags if t in ("985", "211", "双一流"))
+    segs.append({"scene": "reveal", "sub": [f"{d['name']}！", level, extra],
+                 "say": f"{d['name']}！{say_tags(level)}，{say_tags(extra)}。"})
+    hist = c.get("history", d["history"])
     segs.append({"scene": "history", "sub": [f"{y}年 {t}" for y, t in hist],
                  "say": "，".join(f"{zh_year(y)}年，{t}" for y, t in hist) + "。"})
     data_sub, data_say = [], []
-    r0 = R.get("软科中国大学排名")
+    r0 = R.get("软科中国大学排名") or next((r for r in d["rankings"] if r["label"].startswith("软科") and "世界" not in r["label"]), None)
     if r0:
-        data_sub.append(f"软科中国大学排名 第{r0['value']}")
-        data_say.append(f"软科中国大学排名第{zh_int(r0['value'])}")
+        data_sub.append(f"{r0['label']} 第{r0['value']}")
+        data_say.append(f"{r0['label']}第{zh_int(r0['value'])}")
     qs = R.get("QS世界大学排名")
     if qs and qs["value"].isdigit():
         data_sub.append(f"QS世界大学排名 第{qs['value']}")

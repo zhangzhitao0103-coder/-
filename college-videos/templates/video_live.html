@@ -205,7 +205,7 @@ $("hNodes").innerHTML = D.history.map(([y, t], i) => `<div class="node" id="hn${
 
 const aplus = (D.eval_note.match(/(\d+)个学科/) || [])[1];
 const cards = [
-  [R["软科中国大学排名"], "软科中国大学排名"],
+  ...(() => { const r = R["软科中国大学排名"] || D.rankings.find(x => x.label.startsWith("软科") && !x.label.includes("世界")); return r ? [[r, r.label]] : []; })(),
   [R["QS世界大学排名"], "QS世界大学排名"],
   [R["国家双一流建设学科"], "国家双一流建设学科"],
   [{ value: aplus, unit: "个", year: "第四轮学科评估" }, "A+ 学科"],
