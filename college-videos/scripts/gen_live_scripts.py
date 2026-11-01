@@ -106,7 +106,7 @@ def build(sid, c, videos_root):
     sources = {f"c{i}": p.name for i, p in enumerate(sorted(src_dir.glob("*.mp4")), 1)}
     return {"school": f"../../college-posters/data/{sid}.json", "theme": c["theme"], "voice_sid": 80, "voice_speed": 1.38, "gap": 0.32,
             "sources": sources, "src_dir": f"videos/{d['name']}", "framed_sources": c.get("framed_sources", []),
-            "hook": hook, "majors": mj, "majors_tag": c["majors_tag"], "fit": c["fit"], "credit_tag": "实景画面", "alumni": c.get("alumni"),
+            "hook": hook, "history": hist, "majors": mj, "majors_tag": c["majors_tag"], "fit": c["fit"], "credit_tag": "实景画面", "alumni": c.get("alumni"),
             "footage_credit": c.get("footage_credit", f"部分画面来源：{d['name']}官方及公开视频"),
             "cover_hook": c["cover_hook"], "cover_img": f"assets/{sid}_cover.jpg", "cover_shot": c["cover_shot"], "segments": segs}
 
