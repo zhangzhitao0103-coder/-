@@ -240,6 +240,7 @@ const mParts = (SC.motto || D.motto).trim().split(/\s+/);
 $("eMotto").innerHTML = (mParts.join("").length > 4 ? mParts.map(x => `<div style="font-size:150px;line-height:1.15">${esc(x)}</div>`).join("") : esc(mParts.join("")))
   + `<small>${esc(D.name)}${esc(D.motto_label || "校训")}</small>`;
 $("eGoal").textContent = `目标${D.short}`;
+{ const gl = `目标${D.short}`.length; if (gl > 6) $("eGoal").style.fontSize = Math.floor(1000 / gl) + "px"; $("eGoal").style.whiteSpace = "nowrap"; }
 $("eQR").innerHTML = window.QR;
 $("eWeb").textContent = D.website_label;
 $("eDisc").innerHTML = "信息来源：公开资料（截至2026年10月），仅供参考 · 非学校官方发布" + (SC.footage_credit ? `<br>${esc(SC.footage_credit)}` : "");
