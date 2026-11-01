@@ -229,11 +229,14 @@ if (!D.career.rate_value) $("pRate").style.display = "none";   // 无比例数�
 
 const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#0a2a5c" stroke-width="3.4" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 const fits = (SC.fit || D.fit).slice(0, 3);
-const req = (D.subject_req[0][1] || "").split("+").map(x => x.trim()).filter(Boolean);
-$("fReq").innerHTML = `<span class="k">选科要求</span>` + req.map(x => `<span class="p">${esc(x)}</span>`).join(`<span class="k">+</span>`);
+const reqText = SC.req || D.subject_req[0][1] || "";
+const req = reqText.split("+").map(x => x.trim()).filter(Boolean);
+$("fReq").innerHTML = req.length > 1
+  ? `<span class="k">选科要求</span>` + req.map(x => `<span class="p">${esc(x)}</span>`).join(`<span class="k">+</span>`)
+  : `<span class="k" style="font-size:40px;line-height:1.4">${esc(reqText)}</span>`;
 $("fItems").innerHTML = fits.map((f, i) => `<div class="item" id="fi${i}"><i>${CHECK}</i><b>${esc(f)}</b></div>`).join("");
 
-const mParts = D.motto.trim().split(/\s+/);
+const mParts = (SC.motto || D.motto).trim().split(/\s+/);
 $("eMotto").innerHTML = (mParts.join("").length > 4 ? mParts.map(x => `<div style="font-size:150px;line-height:1.15">${esc(x)}</div>`).join("") : esc(mParts.join("")))
   + `<small>${esc(D.name)}${esc(D.motto_label || "校训")}</small>`;
 $("eGoal").textContent = `目标${D.short}`;
