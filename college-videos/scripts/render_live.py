@@ -5,6 +5,7 @@
   python3 scripts/render_live.py data/zju_script.json --build <构建目录> --preview 2,9,20 --out <目录>
 """
 import argparse
+import base64
 import json
 import subprocess
 import sys
@@ -45,16 +46,20 @@ def main():
                     layer.unlink()
                     print(dst)
                 return
+            # Chrome 原生截图（optimizeForSpeed），比 page.screenshot 快一倍多，透明通道逐像素一致
+            cdp = page.context.new_cdp_session(page)
+            cdp.send("Emulation.setDefaultBackgroundColorOverride", {"color": {"r": 0, "g": 0, "b": 0, "a": 0}})
             n = int(timeline["duration"] * FPS)
             ff = subprocess.Popen(
                 ["ffmpeg", "-y", "-loglevel", "error", "-i", str(build / "bg.mp4"),
                  "-f", "image2pipe", "-framerate", str(FPS), "-c:v", "png", "-i", "-",
                  "-filter_complex", "[0:v][1:v]overlay=0:0:shortest=1,format=yuv420p",
-                 "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-r", str(FPS), str(out)],
+                 "-c:v", "libx264", "-preset", "faster", "-crf", "18", "-r", str(FPS), str(out)],
                 stdin=subprocess.PIPE)
             for i in range(n):
                 page.evaluate(f"seek({i / FPS})")
-                ff.stdin.write(page.screenshot(type="png", omit_background=True))
+                shot = cdp.send("Page.captureScreenshot", {"format": "png", "optimizeForSpeed": True})
+                ff.stdin.write(base64.b64decode(shot["data"]))
                 if i % 300 == 0:
                     print(f"{i}/{n}", flush=True)
             ff.stdin.close()
