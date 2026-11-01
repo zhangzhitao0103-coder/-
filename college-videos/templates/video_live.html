@@ -218,12 +218,13 @@ const majors = (SC.majors || D.majors).slice(0, 6);
 $("mChips").innerHTML = majors.map((m, i) => `<div class="chip" id="mc${i}">${esc(m)}</div>`).join("");
 $("mStamp").textContent = SC.majors_tag || D.known_for;
 
-const alumni = D.alumni.slice(0, 2);
+const alumni = (SC.alumni || D.alumni).slice(0, 2);
 $("pCards").innerHTML = alumni.map(([n, t], i) =>
   `<div class="card panel" id="pc${i}"><div class="ava">${esc(n[0])}</div><div><b>${esc(n)}</b><span>${esc(t)}</span></div></div>`).join("");
 $("pLab").textContent = `${D.career.rate_label}（${D.career.rate_year}）`;
-const rate = parseFloat(D.career.rate_value);
-const rateDec = ((D.career.rate_value.split("%")[0].split(".")[1]) || "").length;
+const rate = parseFloat(D.career.rate_value || "0");
+const rateDec = (((D.career.rate_value || "").split("%")[0].split(".")[1]) || "").length;
+if (!D.career.rate_value) $("pRate").style.display = "none";   // 无比例数据时不显示圆环
 
 const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#0a2a5c" stroke-width="3.4" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 const fits = (SC.fit || D.fit).slice(0, 3);

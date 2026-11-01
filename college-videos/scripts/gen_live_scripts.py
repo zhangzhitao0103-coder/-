@@ -82,7 +82,10 @@ def build(sid, c, videos_root):
     segs.append({"scene": "majors", "sub": ["、".join(mj[:3]), "、".join(mj[3:]), f"{c['majors_tag'].replace(' · ', '与')} 是金字招牌"],
                  "say": f"{'、'.join(mj[:3])}，{'、'.join(mj[3:])}，{c['majors_tag'].replace(' · ', '与')}，是它的金字招牌。"})
     segs.append({"scene": "campus", "sub": c["campus_sub"], "say": c["campus_say"]})
-    al = [a[0] for a in d["alumni"][:2]]
+    al = [a[0] for a in c.get("alumni", d["alumni"])[:2]]
+    if "rate_sub" not in c:   # 没有可核实的比例数据：改说主要去向
+        dirs = "、".join(d["career"]["directions"][:2])
+        c = {**c, "rate_sub": f"主要去向：{dirs}", "rate_say": f"毕业生主要去向，{dirs}"}
     segs.append({"scene": "people", "sub": ["、".join(al), c.get("alumni_verb", "都曾在这里求学"), c["rate_sub"]],
                  "say": f"{'、'.join(al)}，{c.get('alumni_verb', '都曾在这里求学')}，{c['rate_say']}。"})
     req = d["subject_req"][0][1]
@@ -99,7 +102,7 @@ def build(sid, c, videos_root):
     sources = {f"c{i}": p.name for i, p in enumerate(sorted(src_dir.glob("*.mp4")), 1)}
     return {"school": f"../../college-posters/data/{sid}.json", "theme": c["theme"], "voice_sid": 80, "voice_speed": 1.38, "gap": 0.32,
             "sources": sources, "src_dir": f"videos/{d['name']}", "framed_sources": c.get("framed_sources", []),
-            "hook": hook, "majors": mj, "majors_tag": c["majors_tag"], "fit": c["fit"], "credit_tag": "实景画面",
+            "hook": hook, "majors": mj, "majors_tag": c["majors_tag"], "fit": c["fit"], "credit_tag": "实景画面", "alumni": c.get("alumni"),
             "footage_credit": c.get("footage_credit", f"部分画面来源：{d['name']}官方及公开视频"),
             "cover_hook": c["cover_hook"], "cover_img": f"assets/{sid}_cover.jpg", "cover_shot": c["cover_shot"], "segments": segs}
 
