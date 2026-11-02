@@ -7,6 +7,7 @@
 """
 import copy
 import importlib.util
+import subprocess
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -127,12 +128,12 @@ OVR = {
             "reveal": [sh("c4", 7.5, 13.5, **JC)],
             "history": [sh("c4", 35.0, 41.0, **JC), sh("c4", 52.5, 58.0, **JC), sh("c4", 80.0, 86.0, **JC)],
             "data": [sh("c4", 86.0, 91.9, **JC), sh("c4", 13.5, 19.5, **JC)],
-            "majors": [sh("c4", 41.0, 44.9, **JC), sh("c4", 55.0, 61.0, **JC)],
-            "campus": [sh("c4", 65.0, 74.5, chunk=0, tag="校园中轴", **JC), sh("c4", 122.5, 129.9, chunk=1, tag="鼎新楼", **JC),
-                       sh("c4", 105.0, 111.9, chunk=2, tag="运动场", **JC)],
-            "people": [sh("c4", 47.5, 49.9, **JC)],
+            "majors": [sh("c4", 41.0, 44.0, **JC), sh("c4", 55.0, 61.0, **JC)],
+            "campus": [sh("c4", 65.0, 74.5, chunk=0, tag="校园中轴", **JC), sh("c4", 122.5, 128.5, chunk=1, tag="鼎新楼", **JC),
+                       sh("c4", 110.0, 112.4, chunk=2, tag="运动场", **JC)],
+            "people": [sh("c4", 47.5, 49.6, **JC)],
             "fit": [sh("c4", 30.0, 34.9, **JC)],
-            "ending": [sh("c4", 125.0, 129.9, **JC), sh("c4", 65.0, 70.0, **JC)],
+            "ending": [sh("c4", 125.0, 128.5, **JC), sh("c4", 65.0, 70.0, **JC)],
         })),
     "hit": ("01", dict(
         cover_shot=["c4", 62.0],
@@ -151,20 +152,20 @@ OVR = {
             "ending": [sh("c4", 60.0, 66.5), sh("c4", 0.1, 5.0)],
         })),
     "sdu": ("02", dict(
-        cover_shot=["c1", 11.5],
-        campus_sub=["知新楼 高耸挺拔", "秋天 红叶满园", "林荫湖畔 绿意盎然"],
-        campus_say="知新楼，高耸挺拔，秋天，红叶满园，林荫湖畔，绿意盎然。",
+        cover_shot=["c3", 1.5],
+        campus_sub=["知新楼 高耸挺拔", "秋天 红叶满园", "楼宇错落 秋色连片"],
+        campus_say="知新楼，高耸挺拔，秋天，红叶满园，楼宇错落，秋色连片。",
         shots={
-            "hook": [sh("c4", 25.0, 30.5, **SD4), sh("c1", 11.1, 12.2)],
+            "hook": [sh("c4", 25.0, 30.5, **SD4), sh("c4", 2.5, 7.0, **SD4)],
             "reveal": [sh("c4", 15.0, 19.9, **SD4)],
             "history": [sh("c4", 0.1, 4.9, **SD4), sh("c4", 5.0, 9.5, **SD4), sh("c4", 12.5, 14.9, **SD4)],
             "data": [sh("c4", 35.0, 39.9, **SD4), sh("c4", 42.5, 44.9, **SD4)],
             "majors": [sh("c4", 45.0, 49.9, **SD4), sh("c4", 50.0, 52.4, **SD4)],
             "campus": [sh("c4", 37.5, 42.4, chunk=0, tag="知新楼", **SD4), sh("c4", 0.1, 4.9, chunk=1, tag="秋日校园", **SD4),
-                       sh("c1", 5.1, 6.9, chunk=2, tag="绿意校园"), sh("c1", 10.1, 12.2, chunk=2)],
-            "people": [sh("c4", 52.5, 57.4, **SD4)],
+                       sh("c4", 52.5, 59.0, chunk=2, tag="校园全景", **SD4)],
+            "people": [sh("c4", 45.0, 49.9, **SD4)],
             "fit": [sh("c4", 22.5, 24.9, **SD4)],
-            "ending": [sh("c4", 30.0, 34.9, **SD4), sh("c4", 55.0, 59.9, **SD4)],
+            "ending": [sh("c4", 30.0, 34.9, **SD4), sh("c4", 12.5, 14.9, **SD4)],
         })),
     "fzu": ("07", dict(
         cover_shot=["c4", 3.0],
@@ -187,16 +188,16 @@ OVR = {
         campus_sub=["长安校区 现代开阔", "秋天 层林尽染", "绿树环绕 生机盎然"],
         campus_say="长安校区，现代开阔，秋天，层林尽染，绿树环绕，生机盎然。",
         shots={
-            "hook": [sh("c4", 10.0, 15.5), sh("c3", 19.0, 21.9)],
+            "hook": [sh("c4", 10.0, 15.5), sh("c3", 19.3, 21.7)],
             "reveal": [sh("c4", 5.0, 10.0)],
-            "history": [sh("c3", 12.0, 13.9), sh("c3", 22.0, 25.9), sh("c3", 14.0, 16.9)],
-            "data": [sh("c3", 17.0, 18.9), sh("c4", 21.0, 25.0)],
+            "history": [sh("c3", 12.0, 13.9), sh("c3", 21.8, 25.9), sh("c3", 14.4, 16.8)],
+            "data": [sh("c3", 16.9, 19.2), sh("c4", 21.0, 25.0)],
             "majors": [sh("c3", 7.0, 11.9), sh("c4", 25.0, 30.9)],
-            "campus": [sh("c4", 15.5, 21.5, chunk=0, tag="长安校区"), sh("c3", 14.0, 16.9, chunk=1, tag="秋日校园"), sh("c3", 19.0, 21.9, chunk=1),
-                       sh("c3", 22.0, 25.9, chunk=2, tag="绿意校园")],
-            "people": [sh("c3", 17.0, 18.9)],
+            "campus": [sh("c4", 15.5, 21.5, chunk=0, tag="长安校区"), sh("c3", 14.4, 16.8, chunk=1, tag="秋日校园"), sh("c3", 19.3, 21.7, chunk=1),
+                       sh("c3", 21.8, 25.9, chunk=2, tag="绿意校园")],
+            "people": [sh("c3", 16.9, 19.2)],
             "fit": [sh("c3", 12.0, 13.9)],
-            "ending": [sh("c4", 25.0, 30.9), sh("c3", 0.1, 1.7)],
+            "ending": [sh("c4", 25.0, 30.9), sh("c3", 0.1, 1.4)],
         })),
     "nwpu": ("02", dict(
         cover_shot=["c5", 30.0],
@@ -218,10 +219,36 @@ OVR = {
 
 DROP = {"hit": ["footage_credit"]}   # 哈工大不再用深圳校区航拍，片尾来源改回默认写法
 
+SHIFT = 1.25   # 补充素材的抽帧总表（fps=1/2.5）每格实际取自标注时刻后 1.25 秒，选镜时间整体按此校正
+
+
+def _shift(c):
+    src = Path(VIDEOS) / _NAMES[c["_name"]]
+    durs = {}
+    for sc in c["shots"].values():
+        for x in sc:
+            if int(x["v"][1:]) <= 3:      # 原素材 c1–c3 的时间来自镜头切分，不用校正
+                continue
+            if x["v"] not in durs:
+                f = sorted(src.glob("*.mp4"))[int(x["v"][1:]) - 1]
+                durs[x["v"]] = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(f)],
+                                                    capture_output=True, text=True).stdout)
+            a, b = x["t"]
+            x["t"] = [round(a + SHIFT, 2), round(min(b + SHIFT, durs[x["v"]] - 0.1), 2)]
+    if int(c["cover_shot"][0][1:]) > 3:
+        c["cover_shot"] = [c["cover_shot"][0], c["cover_shot"][1] + SHIFT]
+
+
+_NAMES = {"sjtu": "上海交通大学", "shisu": "上海外国语大学", "cugb": "中国地质大学（北京）", "ouc": "中国海洋大学", "njust": "南京理工大学",
+          "jlu": "吉林大学", "hit": "哈尔滨工业大学", "sdu": "山东大学", "fzu": "福州大学", "nwu": "西北大学", "nwpu": "西北工业大学"}
+
 SCHOOLS = {}
 for sid, (batch, ovr) in OVR.items():
     c = _base(batch, sid)
     for k in DROP.get(sid, []):
         c.pop(k, None)
-    c.update(ovr)
+    c.update(copy.deepcopy(ovr))
+    c["_name"] = sid
+    _shift(c)
+    del c["_name"]
     SCHOOLS[sid] = c
